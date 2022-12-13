@@ -1,29 +1,33 @@
 
 // ----------------Workflow---------------- //
 
-include { VariantsLoFreq } from './modules/variants_lofreq.nf'
-include { ConvertVCF } from './modules/vcf2fasta.nf'
-include { AnnotateVCF } from './modules/annotate_vcf.nf'
+include { VariantsLoFreq } from '../modules/variants_lofreq.nf'
+include { ConvertVCF } from '../modules/vcf2fasta.nf'
+include { AnnotateVCF } from '../modules/annotate_vcf.nf'
+
+params.caller = "lofreq"
 
 workflow LOFREQ {
 
   take:
   bam_files
 	
-	// GATK VARIANT CALLER ------------------ //
+  main:
+	
+  // GATK VARIANT CALLER ------------------ //
 
-    // Channel for genome reference fasta
-    reference_fasta = Channel.fromPath(params.reference_fasta)
+  // Channel for genome reference fasta
+  reference_fasta = Channel.fromPath(params.reference_fasta_path)
 
-    // Variant calling
-    VariantsLoFreq(reference_fasta, bam_files)
+  // Variant calling
+  VariantsLoFreq(reference_fasta, bam_files)
 
-    // CONVERTING VCF TO FASTA -------------- //
+  // CONVERTING VCF TO FASTA -------------- //
 
-    ConvertVCF("lofreq", reference_fasta, VariantsGATK.out.lofreq_vcf)
+  ConvertVCF(reference_fasta, VariantsGATK.out.lofreq_vcf)
 
-    // ANNOTATE GATK VCF -------------------- //
+  // ANNOTATE GATK VCF -------------------- //
 
-    AnnotateVCF("lofreq", VariantsGATK.out.lofreq_vcf)
+  AnnotateVCF(reference_fasta, VariantsGATK.out.lofreq_vcf)
 
 }

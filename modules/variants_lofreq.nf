@@ -7,7 +7,7 @@ process VariantsLoFreq {
   publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_lofreq.vcf.gz"
 
   input:
-  each path reference
+  each path(reference)
   tuple val(sample_id), path(bam), val(batch), val(run)
 
   output:

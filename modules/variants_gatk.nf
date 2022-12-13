@@ -7,8 +7,8 @@ process VariantsGATK {
   publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_gatk.vcf.gz"
 
   input:
-  each path reference
-  each path dictionary
+  each path(reference)
+  each path(dictionary)
   tuple val(sample_id), path(bam), val(batch), val(run)
 
   output:

@@ -7,12 +7,12 @@ process MapReads_BWA {
   publishDir "${projectDir}/results/${batch}/${sample_id}/bams", mode: "copy", pattern: "*_merged_rmdup.bam"
 
   input:
-  each path reference_fasta
-  each path bwa_index
+  each path(reference_fasta)
+  each path(bwa_index)
   tuple val(sample_id), path(read1), path(reads2), val(batch), val(run)
 
   output:
-  tuple val(sample_id), path("${sample_id}_merged_rmdup.bam"), val(batch), val(run) emit: bam_files
+  tuple val(sample_id), path("${sample_id}_merged_rmdup.bam"), val(batch), val(run), emit: bam_files
 
   """
   # Get machine id_lane from SRA read identifier (old Illumina fastq format)

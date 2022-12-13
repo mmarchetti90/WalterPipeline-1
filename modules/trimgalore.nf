@@ -14,14 +14,14 @@ process TrimFastQ {
   output:
   path "*_fastqc.{html,zip}"
   path "*_trimming_report.txt"
-  tuple val("${sample_id}"), path("${sample_id}_val_1.fq.gz"), path("${sample_id}_val_2.fq.gz"), val("${batch}"), val("${run}") emit: trimmed_fastq_files
+  tuple val("${sample_id}"), path("${sample_id}_val_1.fq.gz"), path("${sample_id}_val_2.fq.gz"), val("${batch}"), val("${run}"), emit: trimmed_fastq_files
 
   """
   trim_galore \
   --cores 4 \
   --output_dir . \
   --basename ${sample_id} \
-  --nextseq 20
+  --nextseq 20 \
   --fastqc \
   --gzip \
   --paired \

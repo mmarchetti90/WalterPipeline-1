@@ -38,7 +38,7 @@ workflow {
 
   // QUANTTB ------------------------------ //
 
-  QuantTB(Kraken.out.kraken_filtered_files)
+  //QuantTB(Kraken.out.kraken_filtered_files)
 
   // MAPPING READS ------------------------ //
 
@@ -47,15 +47,15 @@ workflow {
     // MAPPING READS WITH BWA --------------- //
 
     // Channel for genome reference fasta
-    reference_fasta = Channel.fromPath(params.reference_fasta)
+    reference_fasta = Channel.fromPath(params.reference_fasta_path)
 
     // Channel for BWA index
-    Channel.fromPath("params.bwa_index_path/*{amb,ann,bwt,pac,sa}")
+    Channel.fromPath("${params.bwa_index_path}/*{amb,ann,bwt,pac,sa}")
     .collect()
     .set{bwa_index}
 
     // Mapping and removing duplicates
-    MapReads_BWA(bwa_index, Kraken.out.kraken_filtered_files)
+    MapReads_BWA(reference_fasta, bwa_index, Kraken.out.kraken_filtered_files)
 
     bam_files = MapReads_BWA.out.bam_files
 
@@ -65,7 +65,7 @@ workflow {
     // MAPPING READS WITH BOWTIE2 ----------- //
 
     // Channel for Bowtie2 index
-    Channel.fromPath("params.bowtie_index_path/*bt2")
+    Channel.fromPath("${params.bowtie_index_path}/*bt2")
     .collect()
     .set{bowtie_index}
 
@@ -78,11 +78,11 @@ workflow {
 
   // TB PROFILER -------------------------- //
 
-  TbProfiler(MapReads.out.bam_files)
+  //TbProfiler(MapReads.out.bam_files)
 
   // AMR ---------------------------------- //
 
-  RunAMR(MapReads.out.bam_files)
+  //RunAMR(MapReads.out.bam_files)
 
   // VARIANT CALLING ---------------------- //
 
