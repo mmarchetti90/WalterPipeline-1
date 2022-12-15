@@ -1,0 +1,23 @@
+name: walter_conda_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bbmap
+  - bcftools
+  - bowtie2
+  - bwa
+  - cutadapt
+  - fastqc
+  - gatk
+  - kraken
+  - lofreq
+  - mummer
+  - mykrobe
+  - picard
+  - sambamba
+  - samtools
+  - tabix
+  - tb-profiler
+  - trim-galore
