@@ -20,7 +20,7 @@ RUN mamba install -c conda-forge -y \
     cutadapt \
     fastqc \
     gatk \
-    kraken \
+    kraken2 \
     lofreq \
     mummer \
     mykrobe \
