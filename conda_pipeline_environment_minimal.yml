@@ -11,7 +11,7 @@ dependencies:
   - cutadapt
   - fastqc
   - gatk
-  - kraken
+  - kraken2
   - lofreq
   - mummer
   - mykrobe
