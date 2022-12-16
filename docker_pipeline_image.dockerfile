@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:4.9.2
+FROM continuumio/miniconda3:4.12.0
 
 ### UPDATING CONDA ------------------------- ###
 
@@ -9,10 +9,15 @@ RUN conda update -y conda
 # Adding bioconda to the list of channels
 RUN conda config --add channels bioconda
 
-# Installing mamba
-RUN conda install -c conda-forge -y mamba
+# Adding conda-forge to the list of channels
+RUN conda config --add channels conda-forge
 
-RUN mamba install -c conda-forge -y \
+# Installing mamba
+RUN conda install -y mamba
+
+# Installing packages
+# N.B. have to add weasyprint and specify tb-profiler=4.4.0 or the version automatically installed is 2.8
+RUN mamba install -y \
     bbmap \
     bcftools \
     bowtie2 \
@@ -27,8 +32,9 @@ RUN mamba install -c conda-forge -y \
     picard \
     sambamba \
     tabix \
-    tb-profiler \
-    trim-galore && \
+    tb-profiler=4.4.0 \
+    trim-galore \
+    weasyprint && \
     conda clean -afty
 
 ### SETTING WORKING ENVIRONMENT ------------ ###
