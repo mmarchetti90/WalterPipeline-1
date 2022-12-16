@@ -13,8 +13,10 @@ process RunAMR {
   path "${sample_id}_amr.csv"
 
   """
-  mykrobe predict ${bam} tb \
-  --output .  \
+  mykrobe predict \
+  --sample ${bam} \
+  --species tb \
+  --output ${sample_id}_amr.csv  \
   --format csv \
   --ploidy haploid \
   --seq ${bam} \

@@ -8,6 +8,7 @@ process VariantsLoFreq {
 
   input:
   each path(reference)
+  each path(reference_index)
   tuple val(sample_id), path(bam), val(batch), val(run)
 
   output:
@@ -21,7 +22,7 @@ process VariantsLoFreq {
   lofreq call-parallel --pp-threads \$SLURM_CPUS_ON_NODE -f ${reference} -o ${sample_id}_lofreq.vcf ${bam}
 
   # Gzipping
-  gzip ${sample_id}_lofreq.vcf
+  bgzip ${sample_id}_lofreq.vcf
   """
 
 }

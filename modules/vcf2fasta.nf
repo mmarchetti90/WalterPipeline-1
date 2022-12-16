@@ -4,14 +4,14 @@ process ConvertVCF {
 
   label 'slurm'
 
-  publishDir "${projectDir}/results/${batch}/${sample_id}/fasta", mode: "copy", pattern: "*_${params.aller}.fa"
+  publishDir "${projectDir}/results/${batch}/${sample_id}/fasta", mode: "copy", pattern: "*_${params.variant_caller}.fa"
 
   input:
   each path(reference)
   tuple val(sample_id), path(unfilt_vcf), val(batch), val(run)
 
   output:
-  path "${sample_id}_${params.caller}.fa"
+  path "${sample_id}_${params.variant_caller}.fa"
 
   """
   # Get sample name for correct genotype
@@ -22,7 +22,7 @@ process ConvertVCF {
 
   # Consensus with no masking (exclude indels).
   bcftools consensus --include 'TYPE!="indel"' --fasta-ref ${reference} --sample \${sample} --absent 'N' --missing 'N' ${unfilt_vcf} | \
-  sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>$sample_name/g" > ${sample_id}_${params.caller}.fa
+  sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>${sample_id}/g" > ${sample_id}_${params.variant_caller}.fa
   """
 
 }

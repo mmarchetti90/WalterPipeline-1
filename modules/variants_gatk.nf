@@ -8,6 +8,7 @@ process VariantsGATK {
 
   input:
   each path(reference)
+  each path(reference_index)
   each path(dictionary)
   tuple val(sample_id), path(bam), val(batch), val(run)
 
@@ -24,11 +25,11 @@ process VariantsGATK {
   -ploidy 1 \
   -I ${bam} \
   -ERC GVCF \
-  -O ${sample_id}_gatk.g.vcf.gz
+  -O ${sample_id}_gatk.vcf.gz
 
   # Index gvcf 
   gatk IndexFeatureFile \
-  -I ${sample_id}_gatk.g.vcf.gz
+  -I ${sample_id}_gatk.vcf.gz
 
   # GVCF to VCF. Min base quality score is 10 by default.
   gatk --java-options '-Xmx100g' GenotypeGVCFs \

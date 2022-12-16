@@ -19,11 +19,14 @@ workflow GATK {
   // Channel for genome reference fasta
   reference_fasta = Channel.fromPath(params.reference_fasta_path)
 
+  // Channel for genome reference fasta index
+  reference_fasta_index = Channel.fromPath(params.reference_fasta_index_path)
+
   // Channel for GATK dictionary
   gatk_dictionary = Channel.fromPath(params.gatk_dictionary_path)
 
   // Variant calling
-  VariantsGATK(reference_fasta, gatk_dictionary, bam_files)
+  VariantsGATK(reference_fasta, reference_fasta_index, gatk_dictionary, bam_files)
 
   // CONVERTING VCF TO FASTA -------------- //
 

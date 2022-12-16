@@ -34,7 +34,13 @@ workflow {
 
   // KRAKEN ------------------------------- //
 
-  Kraken(TrimFastQ.out.trimmed_fastq_files)
+  // Channel for Kraken2 database
+  Channel.fromPath("${params.kraken_database_path}/*{kmer_distrib,k2d,txt,map}")
+  .collect()
+  .set{kraken_database}
+
+  // Running Kraken2
+  Kraken(kraken_database, TrimFastQ.out.trimmed_fastq_files)
 
   // QUANTTB ------------------------------ //
 
@@ -78,11 +84,11 @@ workflow {
 
   // TB PROFILER -------------------------- //
 
-  //TbProfiler(MapReads.out.bam_files)
+  TbProfiler(bam_files)
 
   // AMR ---------------------------------- //
 
-  //RunAMR(MapReads.out.bam_files)
+  RunAMR(bam_files)
 
   // VARIANT CALLING ---------------------- //
 
