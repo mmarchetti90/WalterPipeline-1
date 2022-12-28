@@ -1,6 +1,6 @@
 process VariantsLoFreq {
 
-  // Run AMR prediction tool. Removing for now
+  // Variant calling with LoFreq
   
   label 'slurm'
 
