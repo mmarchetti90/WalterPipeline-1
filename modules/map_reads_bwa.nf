@@ -22,10 +22,10 @@ process MapReads_BWA {
   id_lane=\${seqid:-readgroup1} # default is "readgroup1"
 
   # Mapping with BWA
-  bwa mem -t 7 ${reference_fasta} ${read1} ${read2} > temp.sam
+  bwa mem -t \$SLURM_CPUS_ON_NODE ${reference_fasta} ${read1} ${read2} > temp.sam
 
   # Convert sam to bam 
-  sambamba view -t 7 -S -h temp.sam -f bam -o temp.bam
+  sambamba view -t \$SLURM_CPUS_ON_NODE -S -h temp.sam -f bam -o temp.bam
 
   # Add/replace read groups for post-processing with GATK
   picard AddOrReplaceReadGroups \
