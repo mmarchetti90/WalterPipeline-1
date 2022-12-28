@@ -19,7 +19,7 @@ process VariantsLoFreq {
   samtools index ${bam}
 
   # Call variants with LoFreq
-  lofreq call-parallel --pp-threads \$SLURM_CPUS_ON_NODE -f ${reference} -o ${sample_id}_lofreq.vcf ${bam}
+  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq.vcf ${bam}
 
   # Gzipping
   bgzip ${sample_id}_lofreq.vcf
