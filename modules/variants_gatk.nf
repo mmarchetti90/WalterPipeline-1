@@ -1,6 +1,6 @@
 process VariantsGATK {
 
-  // Run AMR prediction tool. Removing for now
+  // Variant calling with GATK
   
   label 'slurm'
 
@@ -25,11 +25,11 @@ process VariantsGATK {
   -ploidy 1 \
   -I ${bam} \
   -ERC GVCF \
-  -O ${sample_id}_gatk.vcf.gz
+  -O ${sample_id}_gatk.g.vcf.gz
 
   # Index gvcf 
   gatk IndexFeatureFile \
-  -I ${sample_id}_gatk.vcf.gz
+  -I ${sample_id}_gatk.g.vcf.gz
 
   # GVCF to VCF. Min base quality score is 10 by default.
   gatk --java-options '-Xmx100g' GenotypeGVCFs \
