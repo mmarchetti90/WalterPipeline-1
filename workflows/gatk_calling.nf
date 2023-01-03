@@ -5,15 +5,12 @@ include { VariantsGATK } from '../modules/variants_gatk.nf'
 include { ConvertVCF } from '../modules/vcf2fasta.nf'
 include { AnnotateVCF } from '../modules/annotate_vcf.nf'
 
-params.caller = "gatk"
-
 workflow GATK {
 
   take:
   bam_files
 	
   main:
-	
   // GATK VARIANT CALLER ------------------ //
 
   // Channel for genome reference fasta

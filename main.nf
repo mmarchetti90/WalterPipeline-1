@@ -13,8 +13,8 @@ include { Kraken } from './modules/kraken.nf'
 include { QuantTB } from './modules/quanttb.nf'
 include { MapReads_BWA } from './modules/map_reads_bwa.nf'
 include { MapReads_Bowtie } from './modules/map_reads_bowtie.nf'
-include { TbProfiler } from './modules/tb_profiler.nf'
 include { RunAMR } from './modules/amr.nf'
+include { TbProfiler } from './modules/tb_profiler.nf'
 include { GATK } from './workflows/gatk_calling.nf'
 include { LOFREQ } from './workflows/lofreq_calling.nf'
 
@@ -82,13 +82,13 @@ workflow {
 
   }
 
-  // TB PROFILER -------------------------- //
-
-  TbProfiler(bam_files)
-
   // AMR ---------------------------------- //
 
   RunAMR(bam_files)
+
+  // TB PROFILER -------------------------- //
+
+  TbProfiler(bam_files)
 
   // VARIANT CALLING ---------------------- //
 

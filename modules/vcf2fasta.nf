@@ -8,21 +8,18 @@ process ConvertVCF {
 
   input:
   each path(reference)
-  tuple val(sample_id), path(unfilt_vcf), val(batch), val(run)
+  tuple val(sample_id), path(vcf), val(batch), val(run)
 
   output:
   path "${sample_id}_${params.variant_caller}.fa"
 
   """
-  # Get sample name for correct genotype
-  sample=\$(bcftools query -l ${unfilt_vcf} )
-
   # Index vcf
-  tabix -p vcf ${unfilt_vcf}
+  tabix -p vcf ${vcf}
 
   # Consensus with no masking (exclude indels).
-  bcftools consensus --include 'TYPE!="indel"' --fasta-ref ${reference} --sample \${sample} --absent 'N' --missing 'N' ${unfilt_vcf} | \
-  sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>${sample_id}/g" > ${sample_id}_${params.variant_caller}.fa
+  # N.B. The vcf files come from individual samples, so no need to specify --sample in bcftools consensus (also, LoFreq does not store sample name info in the vcf).
+  bcftools consensus --include 'TYPE!="indel"' --fasta-ref ${reference} --missing 'N' ${vcf} | sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>${sample_id}/g" > ${sample_id}_${params.variant_caller}.fa
   """
 
 }
