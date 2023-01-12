@@ -21,13 +21,16 @@ workflow GATK {
 
   // Channel for GATK dictionary
   gatk_dictionary = Channel.fromPath(params.gatk_dictionary_path)
+  
+  // Channel for masking bedfile path
+  bed_path = Channel.fromPath(params.bed_path)
 
   // Variant calling
   VariantsGATK(reference_fasta, reference_fasta_index, gatk_dictionary, bam_files)
 
   // CONVERTING VCF TO FASTA -------------- //
 
-  ConvertVCF(reference_fasta, VariantsGATK.out.gatk_vcf)
+  ConvertVCF(reference_fasta, VariantsGATK.out.gatk_vcf, bed_path)
 
   // ANNOTATE GATK VCF -------------------- //
 

@@ -17,15 +17,33 @@ process TrimFastQ {
   tuple val("${sample_id}"), path("${sample_id}_val_1.fq.gz"), path("${sample_id}_val_2.fq.gz"), val("${batch}"), val("${run}"), emit: trimmed_fastq_files
 
   """
+  # Trim adapters and short reads, for all platforms but NextSeq
+
+  if [ "${params.nextseq}" = false ]; then 
   trim_galore \
-  --cores 4 \
+  --cores \$SLURM_CPUS_ON_NODE \
   --output_dir . \
   --basename ${sample_id} \
-  --nextseq 20 \
   --fastqc \
   --gzip \
   --paired \
   ${read1} ${read2}
+  
+   # Trim adapters and short reads, for NextSeq
+ 
+  elif [ "${params.nextseq}" = true ]; then 
+  trim_galore \
+  --cores \$SLURM_CPUS_ON_NODE \
+  --output_dir . \
+  --basename ${sample_id} \
+  --nextseq ${params.nextseq_qual_threshold} \
+  --fastqc \
+  --gzip \
+  --paired \
+  ${read1} ${read2}
+  
+  fi
+  
   """
 
 }

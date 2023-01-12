@@ -5,3 +5,5 @@ test
 test_data
 work
 workflows
+.nextflow*
+kwalter_singularity.sif

@@ -4,7 +4,7 @@ process VariantsLoFreq {
   
   label 'slurm'
 
-  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_lofreq.vcf.gz"
+  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*{lofreq_unfilt,lowfreq_filt}.vcf.gz}"
 
   input:
   each path(reference)
@@ -12,17 +12,24 @@ process VariantsLoFreq {
   tuple val(sample_id), path(bam), val(batch), val(run)
 
   output:
-  tuple val(sample_id), path("${sample_id}_lofreq.vcf.gz"), val(batch), val(run), emit: lofreq_vcf
+  tuple val(sample_id), path("${sample_id}_lofreq_unfilt.vcf.gz"), val(batch), val(run), emit: lofreq_unfilt_vcf
+  tuple val(sample_id), path("${sample_id}_lofreq_filt.vcf.gz"), val(batch), val(run), emit: lofreq_filt_vcf
 
   """
   # Indexing bam
   samtools index ${bam}
-
-  # Call variants with LoFreq
-  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq.vcf ${bam}
+  
+  # Call variants with LoFreq, no filter. 
+  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq_unfilt.vcf ${bam}
 
   # Bgzipping
-  bgzip ${sample_id}_lofreq.vcf
+  bgzip ${sample_id}_lofreq_unfilt.vcf
+  
+  # Call variants with LoFreq, default filter. 
+  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq_filt.vcf ${bam}
+
+  # Bgzipping
+  bgzip ${sample_id}_lofreq_filt.vcf
   """
 
 }
