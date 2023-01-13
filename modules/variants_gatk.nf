@@ -4,7 +4,7 @@ process VariantsGATK {
   
   label 'slurm'
 
-  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*{gatk,gatk.g}.vcf.gz}"
+  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*{gatk,gatk.g,gatk_filt}.vcf.gz}"
 
   input:
   each path(reference)
@@ -15,9 +15,10 @@ process VariantsGATK {
   output:
   tuple val(sample_id), path("${sample_id}_gatk.g.vcf.gz"), val(batch), val(run), emit: gatk_gvcf
   tuple val(sample_id), path("${sample_id}_gatk.vcf.gz"), val(batch), val(run), emit: gatk_vcf
+  tuple val(sample_id), path("${sample_id}_gatk_filt.vcf.gz"), val(batch), val(run), emit: gatk_vcf_filt
 
   """
-  # Indexing bam
+  # Index bam
   samtools index ${bam}  
   
   # Call variants with GATK, output GVCF.
@@ -37,6 +38,19 @@ process VariantsGATK {
   -ploidy ${params.ploidy} \
   --include-non-variant-sites true \
   --output ${sample_id}_gatk.vcf.gz
+
+  # Filter variants by depth and quality score (annotated as PASS or with filter name, not removed).
+  gatk VariantFiltration \
+  -R ${reference} \
+  -V ${sample_id}_gatk.vcf.gz
+  -O ${sample_id}_gatk_filt.vcf.gz \
+  --filterName "lowDepth"
+  --filterExpression "DP >= ${params.depth_threshold}" \
+  --filterName "lowQual"
+  --filterExpression "QUAL >= ${params.qual_threshold}" \
+  --maskName "PPE" \
+  --mask ${params.bed_path}
+
   """
 
 }
