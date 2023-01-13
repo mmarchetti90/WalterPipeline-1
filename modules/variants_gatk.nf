@@ -44,10 +44,10 @@ process VariantsGATK {
   -R ${reference} \
   -V ${sample_id}_gatk.vcf.gz
   -O ${sample_id}_gatk_filt.vcf.gz \
-  --filterName "lowDepth" \
-  --filterExpression "DP >= ${params.depth_threshold}" \
-  --filterName "lowQual" \
-  --filterExpression "QUAL >= ${params.qual_threshold}" \
+  --filter-name "lowDepth" \
+  --filter-expression "DP >= ${params.depth_threshold}" \
+  --filter-name "lowQual" \
+  --filter-expression "QUAL >= ${params.qual_threshold}" \
   --maskName "PPE" \
   --mask ${params.bed_path}
 
