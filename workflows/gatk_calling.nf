@@ -30,7 +30,7 @@ workflow GATK {
 
   // CONVERTING VCF TO FASTA -------------- //
 
-  ConvertVCF(reference_fasta, VariantsGATK.out.gatk_vcf, bed_path)
+  ConvertVCF(reference_fasta, VariantsGATK.out.gatk_vcf_filt, bed_path)
 
   // ANNOTATE GATK VCF -------------------- //
 
