@@ -1,5 +1,11 @@
 modules
-resources
+resources/bowtie2_index
+resources/H37Rv*
+resources/bwa_index
+resources/kraken_db
+resources/snpEff_refs
+resources/snpEff
+resources/gatk_dictionary
 results
 test
 test_data
