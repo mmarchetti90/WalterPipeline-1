@@ -37,4 +37,18 @@ nextflow run main.nf
 ```
 nextflow run main.nf
 ```
- 
+
+## Options
+
+There are several user options which can be modified on the command line or in the nextflow.config file (command line options take precedence).
+- mapper (bwa/bowtie2): defines mapping algorithm to be used (default = bwa).
+- run_lofreq (true/false): In addition to calling variants with GATK, will call low frequency minority variants with LoFreq.
+- depth_threshold: defines minimum site depth for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 5)
+- qual_threshold: defines the minimum site quality score for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 20)
+- ploidy: defines ploidy for GATK variant calling (currently, only tested for ploidy = 1)
+- threads: defines available threads (default = 4)
+- nextseq (true/false): Use of NextSeq sequencing platform? (default = false). Nextseq has been found to [overcall](https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md) G bases at the 3' end; if this option is turned on, TrimGalore will ignore quality scores of G bases in the trimming step. 
+- nextseq_qual_threshold: If the above parameter is true, defines the quality threshold for trimming (default = 20).
+
+
+
