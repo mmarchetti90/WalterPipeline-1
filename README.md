@@ -14,7 +14,7 @@ docker pull YYY
 # Clone Github (includes scripts and small, pipeline-specific resources).
 git clone YYY
 
-#
+# Run download_refs.sh.
 cd mtb-call/ (update w/name of pipeline)
 ./scripts/download_refs.sh
 ```
