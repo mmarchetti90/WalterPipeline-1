@@ -21,11 +21,20 @@ cd WalterPipeline (update w/name of pipeline)
 This should populate your resources directory with all required references and databases.
 
 3. Modify the config file (nextflow.config).
-  -update the path to the Docker image
-  -update all paths to resources
+  - update the path to the Docker image
+  - update all paths to resources
 
 ## Usage
-1. Run the pipeline on the test data included in the data directory. Include any user options here. 
+1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. 
 ```
 nextflow run main.nf
 ```
+
+2. Run the pipeline on user data. 
+  - Create a tab-delimited file with sample name, full path to FASTQ read 1, full path to FASTQ read 2, batch name, run name (format like data/reads_list.tsv). 
+  - Update the nextflow.config so that the reads_list parameter is now defined by the new list. 
+  - Run the pipeline.
+```
+nextflow run main.nf
+```
+ 
