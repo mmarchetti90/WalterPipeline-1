@@ -4,12 +4,7 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 
 ## Installation & set-up
 
-1. Download Docker image. This is a containerized pipeline, so the Docker image contains the software and versions required for analysis.
-```
-docker pull YYY 
-```
-
-2. Run script to download references and resources (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
+1. Run script to download references and resources (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
 ```
 # Clone Github (includes scripts and small, pipeline-specific resources).
 git clone https://github.com/ksw9/WalterPipeline.git
@@ -20,12 +15,12 @@ cd WalterPipeline (update w/name of pipeline)
 ```
 This should populate your resources directory with all required references and databases.
 
-3. Modify the config file (nextflow.config).
+2. Modify the config file (nextflow.config).
   - update the path to the Docker image
   - update all paths to resources
 
 ## Usage
-1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. 
+1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
 ```
 nextflow run main.nf
 ```
@@ -49,6 +44,10 @@ There are several user options which can be modified on the command line or in t
 - threads: defines available threads (default = 4)
 - nextseq (true/false): Use of NextSeq sequencing platform? (default = false). Nextseq has been found to [overcall](https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md) G bases at the 3' end; if this option is turned on, TrimGalore will ignore quality scores of G bases in the trimming step. 
 - nextseq_qual_threshold: If the above parameter is true, defines the quality threshold for trimming (default = 20).
+
+## Outputs
+
+All outputs are stored in the results directory, within the project directory. Directory structure mirrors the input reads file, with directories organized by sequencing run, then sample.
 
 
 
