@@ -12,19 +12,20 @@ docker pull YYY
 2. Run script to download references and resources (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
 ```
 # Clone Github (includes scripts and small, pipeline-specific resources).
-git clone YYY
+git clone https://github.com/ksw9/WalterPipeline.git
 
 # Run download_refs.sh.
-cd mtb-call/ (update w/name of pipeline)
+cd WalterPipeline (update w/name of pipeline)
 ./scripts/download_refs.sh
 ```
 This should populate your resources directory with all required references and databases.
 
-3. Modify the config file (nextflow.config) and sample input sheet (xxx). 
-  -
+3. Modify the config file (nextflow.config).
+  -update the path to the Docker image
+  -update all paths to resources
 
 ## Usage
-1. Run the pipeline. Include any user options here. 
+1. Run the pipeline on the test data included in the data directory. Include any user options here. 
 ```
 nextflow run main.nf
 ```
