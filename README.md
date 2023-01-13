@@ -11,16 +11,17 @@ docker pull YYY
 
 2. Run script to download references and resources (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
 ```
-# Download script
+# Clone Github (includes scripts and small, pipeline-specific resources).
+git clone YYY
 
 #
-chmod 755 script
-
-./script
+cd mtb-call/ (update w/name of pipeline)
+./scripts/download_refs.sh
 ```
+This should populate your resources directory with all required references and databases.
 
 3. Modify the config file (nextflow.config) and sample input sheet (xxx). 
-
+  -
 
 ## Usage
 1. Run the pipeline. Include any user options here. 
