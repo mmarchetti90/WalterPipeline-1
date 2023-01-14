@@ -18,10 +18,12 @@ process MapReads_BWA {
   
   """
   # Get machine id_lane from SRA read identifier (old Illumina fastq format)
-  seqid=\$(zcat ${read1} | head -n 1)
-  seqid="\$(echo \$seqid | cut -d' ' -f1)"
-  seqid="\$(echo \$seqid | cut -d':' -f3)"
-  id_lane=\${seqid:-readgroup1} # default is "readgroup1"
+  read_name=\$(zcat ${read1} | head -n 1)
+  flowcell=\$(echo ${read_name} | cut -d: -f1-2)
+  barcode=\$(echo ${read_name} | cut -d: -f3)
+  lane=\$(echo ${read_name} | cut -d: -f4)
+  ID=\${flowcell}'.'${lane}
+  PU=\${flowcell}'.'${barcode}'.'${lane}
   
   # Mapping with BWA
   bwa mem -t \$SLURM_CPUS_ON_NODE ${reference_fasta} ${read1} ${read2} > temp.sam
@@ -39,9 +41,9 @@ process MapReads_BWA {
   picard AddOrReplaceReadGroups \
   -INPUT temp.bam \
   -OUTPUT temp_rg.bam \
-  -RGID \${id_lane} \
+  -RGID \${ID} \
   -RGLB ${params.library} \
-  -RGPU \${id_lane} \
+  -RGPU \${PU} \
   -RGPL ${params.seq_platform} \
   -RGSM ${sample_id}
   
