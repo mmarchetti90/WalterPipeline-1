@@ -5,16 +5,14 @@ process Kraken {
   label 'slurm'
 
   //publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kr_{1,2}.fq.gz"
-  //publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kraken.report"
-  //publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kraken_stats.csv"
+  publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kraken.report"
 
   input:
   path(kraken_db)
   tuple val(sample_id), path(read1), path(read2), val(batch), val(run)
 
   output:
-  //path "*_kraken.report"
-  //path "*_kraken_stats.csv"
+  path "*_kraken.report", emit: kraken_reports
   tuple val("${sample_id}"), path("${sample_id}_kr_1.fq.gz"), path("${sample_id}_kr_2.fq.gz"), val("${batch}"), val("${run}"), emit: kraken_filtered_files
 
   """

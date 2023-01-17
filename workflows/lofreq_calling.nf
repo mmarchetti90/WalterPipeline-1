@@ -2,7 +2,6 @@
 // ----------------Workflow---------------- //
 
 include { VariantsLoFreq } from '../modules/variants_lofreq.nf'
-include { ConvertVCF } from '../modules/vcf2fasta.nf'
 include { AnnotateVCF } from '../modules/annotate_vcf.nf'
 
 workflow LOFREQ {
@@ -13,21 +12,17 @@ workflow LOFREQ {
   main:
   // GATK VARIANT CALLER ------------------ //
 
-  // Channel for genome reference fasta
-  reference_fasta = Channel.fromPath(params.reference_fasta_path)
+  // Channel for genome reference fasta (absolute path from params won't do since the fasta index has to be in same dir for GATK)
+  reference_fasta = Channel.fromPath("${params.resources_dir}/${params.reference_fasta_path}")
 
   // Channel for genome reference fasta index
-  reference_fasta_index = Channel.fromPath(params.reference_fasta_index_path)
+  reference_fasta_index = Channel.fromPath("${params.resources_dir}/${params.reference_fasta_index_path}")
 
   // Variant calling
   VariantsLoFreq(reference_fasta, reference_fasta_index, bam_files)
 
-  // CONVERTING VCF TO FASTA -------------- //
-
-  ConvertVCF(reference_fasta, VariantsLoFreq.out.lofreq_vcf)
-
   // ANNOTATE GATK VCF -------------------- //
 
-  AnnotateVCF(reference_fasta, VariantsLoFreq.out.lofreq_vcf)
+  AnnotateVCF("LoFreq", reference_fasta, VariantsLoFreq.out.lofreq_filt_vcf)
 
 }

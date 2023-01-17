@@ -4,14 +4,15 @@ process AnnotateVCF {
   
   label 'slurm'
 
-  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_${params.variant_caller}_ann.vcf.gz"
+  publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_${variant_caller}_ann.vcf.gz"
 
   input:
+  each variant_caller
   each path(reference)
   tuple val(sample_id), path(vcf), val(batch), val(run)
 
   output:
-  path "${sample_id}_${params.variant_caller}_ann.vcf.gz"
+  path "${sample_id}_${variant_caller}_ann.vcf.gz"
 
   """
   # Rename Chromosome to be consistent with snpEff/Ensembl genomes.
@@ -19,10 +20,10 @@ process AnnotateVCF {
   tabix ${sample_id}_renamed.vcf.gz
 
   # Run snpEff and then rename Chromosome.
-  java -jar -Xmx8g ${params.snpeff} eff ${params.snpeff_db} ${sample_id}_renamed.vcf.gz -dataDir ${params.snpeff_datapath} -noStats -no-downstream -no-upstream -canon | sed 's/Chromosome/NC_000962.3/g' > ${sample_id}_tmp.vcf.gz
+  java -jar -Xmx8g ${params.resources_dir}/${params.snpeff} eff ${params.resources_dir}/${params.snpeff_db} ${sample_id}_renamed.vcf.gz -dataDir ${params.resources_dir}/${params.snpeff_datapath} -noStats -no-downstream -no-upstream -canon | sed 's/Chromosome/NC_000962.3/g' > ${sample_id}_tmp.vcf.gz
 
   # Also use bed file to annotate vcf, zip.
-  bcftools annotate -a ${params.bed_path} -h ${params.vcf_header} -c CHROM,FROM,TO,FORMAT/PPE ${sample_id}_tmp.vcf.gz | bgzip > ${sample_id}_${params.variant_caller}_ann.vcf.gz
+  bcftools annotate -a ${params.resources_dir}/${params.bed_path} -h ${params.resources_dir}/${params.vcf_header} -c CHROM,FROM,TO,FORMAT/PPE ${sample_id}_tmp.vcf.gz | bgzip > ${sample_id}_${variant_caller}_ann.vcf.gz
   """
 
 }
