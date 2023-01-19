@@ -1,10 +1,10 @@
 process SummarizeRun {
 
-  // Parse logs from TrimGalore, Kraken, BWA/Bowtie2
+  // Parse logs from TrimGalore, Kraken, BWA/Bowtie2, Tb-Profiler
   
   label 'slurm'
 
-  publishDir "${projectDir}/results", mode: "copy", pattern: "pipeline_run_summary.tsv"
+  publishDir "${projectDir}/results", mode: "copy", pattern: "pipeline_run_summary_*.tsv"
 
   input:
   path reads_list
@@ -16,11 +16,10 @@ process SummarizeRun {
   path tbprofiler_reports
 
   output:
-  path "pipeline_run_summary.tsv"
+  path "pipeline_run_summary_*.tsv"
 
   """
-  # WORK IN PROGRESS
-  touch pipeline_run_summary.tsv
+  python ${projectDir}/scripts/make_run_summary.py --reads_list_file ${reads_list}
   """
 
 }
