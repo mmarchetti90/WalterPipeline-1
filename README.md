@@ -25,8 +25,7 @@ cd WalterPipeline (update w/name of pipeline)
 This should populate your resources directory with all required references and databases.
 
 3. Modify the config file (nextflow.config).
-  - update the path to the Docker image
-  - update all paths to resources
+  - update resources_dir (full path to directory resources)
   - update clusterOptions parameter to make specific to cluster.
 
 ## Usage
