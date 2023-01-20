@@ -49,5 +49,5 @@ ${container} run -v $(pwd)/${ref_dir} java -jar snpEff.jar download Mycobacteriu
 # https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown
 ${container} run -v $(pwd)/${ref_dir} kraken2-build --standard --threads 24 --db $DBNAME
 
-## 5. Create reads list input with full paths to test data. 
+## 5. Create reads list input with full paths to test data. (To update!)
 
