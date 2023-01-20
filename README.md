@@ -27,6 +27,7 @@ This should populate your resources directory with all required references and d
 3. Modify the config file (nextflow.config).
   - update the path to the Docker image
   - update all paths to resources
+  - update clusterOptions parameter to make specific to cluster.
 
 ## Usage
 1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
