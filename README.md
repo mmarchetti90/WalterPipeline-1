@@ -4,18 +4,27 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 
 ## Installation & set-up
 
-1. Run script to download references and resources (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
+1. Clone Github repo.
 ```
 # Clone Github (includes scripts and small, pipeline-specific resources).
 git clone https://github.com/ksw9/WalterPipeline.git
+```
 
+2. Load your HPC's container tool (i.e. Docker or Singularity). 
+```
+module load docker
+module load singularity
+```
+
+3. Run script to download references and resources, specify docker/sigularity (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
+```
 # Run download_refs.sh.
 cd WalterPipeline (update w/name of pipeline)
-./scripts/download_refs.sh
+./scripts/download_refs.sh <docker/singularity>
 ```
 This should populate your resources directory with all required references and databases.
 
-2. Modify the config file (nextflow.config).
+3. Modify the config file (nextflow.config).
   - update the path to the Docker image
   - update all paths to resources
 
