@@ -23,6 +23,7 @@ RUN mamba install -y \
     bowtie2 \
     bwa \
     cutadapt \
+    entrez-direct \
     fastqc \
     gatk \
     kraken2 \
