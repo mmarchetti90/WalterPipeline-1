@@ -4,50 +4,95 @@
 #### Download references & index reference genomes for Mtb variant calling pipeline ####
 ########################################################################################
 
-# Define local container tool (default is docker).
-container=${1:-"docker"}   
+# Define local container tool: docker (default), podman, or singularity.
+# N.B. If using Podman, choose "docker"
+container=${1:-"docker"}
 
 # Define locations
-ref_dir=resources/
-mkdir -p ${ref_dir}
-cd ${ref_dir}
-ref_path=${ref_dir}/refs/H37Rv.fasta
+res_dir=resources/
+ref_dir=refs/
+bwa_index_dir=bwa_index/
+bowtie2_index_dir=bowtie2_index/
+gatk_dictionary_dir=gatk_dictionary/
+kraken2_db_dir=kraken_db/
+
+# Define main variables
+ref_name="H37Rv.fasta"
+gatk_dictionary_name="H37Rv.dict"
+bowtie_index_prefix="H37Rv"
+snpeff_url=https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
 ncbi_id="NC_000962.3"
 image="ksw9/mtb-call"
 
+# Make necessary directories
+mkdir -p ${res_dir}
+cd ${res_dir}
+mkdir -p ${ref_dir}
+mkdir -p ${bwa_index_dir}
+mkdir -p ${bowtie2_index_dir}
+mkdir -p ${gatk_dictionary_dir}
+mkdir -p ${kraken2_db_dir}
+
+# Define run command and options
+if [ "$container" = "docker" ]
+then
+
+	run_command="run"
+	bind_option="-v $(pwd):/home"
+	other_options="--rm"
+
+elif [ "$container" = "podman" ]
+then
+
+	run_command="run"
+	bind_option="-v $(pwd):/home"
+	other_options="--rm"
+
+else
+
+	run_command="exec"
+	bind_option="-B $(pwd):/home"
+	
+fi
+
 # Requires: entrez-direct (conda), bwa, GATK, samtools, kraken2, all present in the container.
 # Run each step within the image. Need to mount local directory so that the resources are downloaded locally, not just in the container.
+
 ## 1. Reference genome ##
 # Download H37Rv reference fasta (alternatively, use efetch)
-${container} run -v $(pwd)/${ref_dir} esearch -db nucleotide -query ${ncbi_id} | efetch -format fasta > ${ref_path}
+${container} ${run_command} ${bind_option} ${other_options} ${image} /bin/bash -c "esearch -db nucleotide -query ${ncbi_id} | efetch -format fasta > ${ref_dir}${ref_name}"
 
 # bwa index reference
-${container} run -v $(pwd)/${ref_dir} bwa index ${ref_path}
+#${container} ${run_command} ${bind_option} ${other_options} ${image} bwa index ${ref_dir}${ref_name}
+mv ${ref_dir}*.{amb,ann,bwt,pac,sa} ${bwa_index_dir}
+
+# bowtie2 index reference
+${container} ${run_command} ${bind_option} ${other_options} ${image} bowtie2-build ${ref_dir}${ref_name} ${bowtie2_index_dir}${bowtie_index_prefix}
 
 # Create fasta index file
-${container} run -v $(pwd)/${ref_dir}  samtools faidx ${ref_path}
+${container} ${run_command} ${bind_option} ${other_options} ${image} samtools faidx ${ref_dir}${ref_name}
 
 # create GATK reference dictionary
-${container} run -v $(pwd)/${ref_dir} gatk CreateSequenceDictionary -R ${ref_path}
+${container} ${run_command} ${bind_option} ${other_options} ${image} gatk CreateSequenceDictionary -R ${ref_dir}${ref_name}
+mv ${ref_dir}${gatk_dictionary_name} ${gatk_dictionary_dir}
 
 ## 2. Masking bed file ##
 # PPE masking bed file (H37Rv_ppe.bed.gz) and VCF PPE annotation (ppe_hdr.txt) are in resources/bed hosted on Github
 
 ## 3. Annotation information ##
 # Download SnpEff for gene annotation.
-cd ${ref_dir}/snpEff
-${container} run -v $(pwd)/${ref_dir} wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
+${container} ${run_command} ${bind_option} ${other_options} ${image} wget ${snpeff_url}
 
 # Unzip file
 unzip snpEff_latest_core.zip
+rm snpEff_latest_core.zip
 
 # Download the updated M. tuberculosis annotations.
-${container} run -v $(pwd)/${ref_dir} java -jar snpEff.jar download Mycobacterium_tuberculosis_h37rv
+${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar snpEff/snpEff.jar download Mycobacterium_tuberculosis_h37rv
 
 ## 4. Kraken2 Database ##
 # download kraken2 database (requires ~100G) 
 # https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown
-${container} run -v $(pwd)/${ref_dir} kraken2-build --standard --threads 24 --db $DBNAME
+${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads 24 --db ${kraken2_db_dir}
 
 ## 5. Create reads list input with full paths to test data. (To update!)
-
