@@ -52,7 +52,7 @@ else
 
 	run_command="exec"
 	bind_option=""
-	other_options=""
+	other_options="--cleanenv"
 	image="docker://ksw9/mtb-call"
 	
 fi
