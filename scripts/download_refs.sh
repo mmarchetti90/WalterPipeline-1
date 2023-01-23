@@ -65,7 +65,7 @@ fi
 ${container} ${run_command} ${bind_option} ${other_options} ${image} /bin/bash -c "esearch -db nucleotide -query ${ncbi_id} | efetch -format fasta > ${ref_dir}${ref_name}"
 
 # bwa index reference
-#${container} ${run_command} ${bind_option} ${other_options} ${image} bwa index ${ref_dir}${ref_name}
+${container} ${run_command} ${bind_option} ${other_options} ${image} bwa index ${ref_dir}${ref_name}
 mv ${ref_dir}*.{amb,ann,bwt,pac,sa} ${bwa_index_dir}
 
 # bowtie2 index reference
