@@ -22,7 +22,6 @@ gatk_dictionary_name="H37Rv.dict"
 bowtie_index_prefix="H37Rv"
 snpeff_url=https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip
 ncbi_id="NC_000962.3"
-image="ksw9/mtb-call"
 
 # Make necessary directories
 mkdir -p ${res_dir}
@@ -40,6 +39,7 @@ then
 	run_command="run"
 	bind_option="-v $(pwd):/home"
 	other_options="--rm"
+	image="ksw9/mtb-call"
 
 elif [ "$container" = "podman" ]
 then
@@ -51,7 +51,9 @@ then
 else
 
 	run_command="exec"
-	bind_option="-B $(pwd):/home"
+	bind_option=""
+	other_options=""
+	image="docker://ksw9/mtb-call"
 	
 fi
 
