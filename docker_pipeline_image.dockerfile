@@ -38,6 +38,14 @@ RUN mamba install -y \
     weasyprint && \
     conda clean -afty
 
+### FIX KRAKEN2-BUILD ---------------------- ###
+
+# Fixes the "rsync_from_ncbi.pl: unexpected FTP path (new server?)" error
+# Thanks to Bent Petersen, PhD (https://www.bpetersen.dk/post/kraken2-rsync_from_ncbi-pl-unexpected-ftp-path-new-server-for)
+RUN mv /opt/conda/libexec/rsync_from_ncbi.pl /opt/conda/libexec/rsync_from_ncbi.pl.bak && \
+    sed '46 s/ftp/https/' /opt/conda/libexec/rsync_from_ncbi.pl.bak > /opt/conda/libexec/rsync_from_ncbi.pl && \
+    chmod 775 /opt/conda/libexec/rsync_from_ncbi.pl
+
 ### SETTING WORKING ENVIRONMENT ------------ ###
 
 # Set workdir to /home/
