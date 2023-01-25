@@ -97,4 +97,8 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar s
 # https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown
 ${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads 24 --db ${kraken2_db_dir}
 
-## 5. Create reads list input with full paths to test data. (To update!)
+## 5. Create reads list input with full paths to test data.
+cd ../test_reads
+touch ../resources/reads_list.tsv
+echo "sample\tfastq1\tfastq_2\tbatch\trun" >> ../resources/reads_list.tsv
+echo "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R1_001.fastq.gz\tTest\tTestRun" >> ../resources/reads_list.tsv
