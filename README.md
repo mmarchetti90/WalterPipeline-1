@@ -57,6 +57,17 @@ There are several user options which can be modified on the command line or in t
 ## Outputs
 
 All outputs are stored in the results directory, within the project directory. Directory structure mirrors the input reads file, with directories organized by sequencing run, then sample.
+```
+├── results
+│   ├── test_data/test (example organized by sequencing batch, then sample) 
+|   │   ├──trim
+|   │   ├──kraken
+|   │   ├──bams
+|   │   ├──vars
+|   │   ├──fasta
+|   │   ├──stats
+```
+## Example data
 
-
-
+- Truncated paired-end fastq files are in the test_data directory.
+- An input sample .tsv file list is located at config/test_data.tsv.
