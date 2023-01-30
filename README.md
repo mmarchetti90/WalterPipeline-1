@@ -10,16 +10,16 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 git clone https://github.com/ksw9/WalterPipeline.git
 ```
 
-2. Load your HPC's container tool (i.e. Docker or Singularity). 
+2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Update 
 ```
-module load docker
-module load singularity
+module load docker # module load singularity
+module load nextflow
 ```
 
 3. Run script to download references and resources, specify docker/sigularity (these, especially the Kraken2 database, are too large to include elsewhere). The Kraken2 database requires ~100G of space; users with more limited memory might consider a different database.
 ```
 # Run download_refs.sh.
-cd WalterPipeline (update w/name of pipeline)
+cd WalterPipeline 
 ./scripts/download_refs.sh <docker/singularity>
 ```
 This should populate your resources directory with all required references and databases.
