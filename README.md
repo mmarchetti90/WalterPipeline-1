@@ -6,7 +6,6 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 
 1. Clone Github repo.
 ```
-# Clone Github (includes scripts and small, pipeline-specific resources).
 git clone https://github.com/ksw9/WalterPipeline.git
 ```
 
