@@ -10,7 +10,7 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 git clone https://github.com/ksw9/WalterPipeline.git
 ```
 
-2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Update 
+2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Some clusters may have these pre-loaded.)
 ```
 module load docker # module load singularity
 module load nextflow
@@ -71,3 +71,11 @@ All outputs are stored in the results directory, within the project directory. D
 
 - Truncated paired-end fastq files are in the test_data directory.
 - An input sample .tsv file list is located at config/test_data.tsv.
+
+## Troubleshooting
+
+- Singularity uses the $HOME directory as the default cache. Set to TMPDIR via: 
+``` 
+export SINGULARITY_CACHEDIR=$TMPDIR
+export SINGULARITY_TMPDIR=$TMPDIR
+```
