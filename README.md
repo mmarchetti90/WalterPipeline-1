@@ -19,7 +19,7 @@ module load nextflow
 ```
 # Run download_refs.sh.
 cd WalterPipeline 
-./scripts/download_refs.sh <docker/singularity>
+./scripts/download_refs.sh singularity # or docker
 ```
 This should populate your resources directory with all required references and databases.
 
