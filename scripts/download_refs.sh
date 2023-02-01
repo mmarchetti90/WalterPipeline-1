@@ -101,4 +101,4 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-bui
 cd ../test_reads
 touch ../resources/reads_list.tsv
 echo "sample\tfastq_1\tfastq_2\tbatch\trun" >> ../resources/reads_list.tsv
-echo "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R1_001.fastq.gz\tTest\tTestRun" >> ../resources/reads_list.tsv
+echo "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest\tTestRun" >> ../resources/reads_list.tsv
