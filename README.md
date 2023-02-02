@@ -23,16 +23,17 @@ cd WalterPipeline
 ```
 This should populate your resources directory with required references and databases.
 
-4. Download the most up-to-date Kraken2 [database](https://benlangmead.github.io/aws-indexes/k2) to `resources/kraken_db` for taxonomic filtering. The Standard kraken2 databse is 62Gb, if you have space constraints, use the Standard-8 or Standard-16. 
+4. Download the most up-to-date Kraken2 [database](https://benlangmead.github.io/aws-indexes/k2) to `resources/kraken_db` for taxonomic filtering. The Standard kraken2 databse is 62Gb, if you have space constraints, use the Standard-8 or Standard-16. (If you are using a pre-built Kraken2 database, skip this step.)
 ```
 cd resources/kraken_db
 wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20221209.tar.gz 
 tar -xf k2_standard_20221209.tar.gz 
 ```
 
-5. Modify the config file (nextflow.config).
+5. Modify the config file (nextflow.config):
   - update resources_dir (full path to directory resources)
-  - update clusterOptions parameter to make specific to cluster.
+  - update clusterOptions parameter to make specific to cluster
+  - update kraken_db with the path to a previously installed Kraken2 database
 
 ## Usage
 1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
