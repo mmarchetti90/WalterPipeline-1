@@ -159,7 +159,7 @@ for index, row in enumerate(reads_list):
 
 # Formatting text
 summary_text = '\n'.join(['\t'.join(summary_header)] +
-                         ['\t'.join([str(summary[h][i]) for h in summary_header]) for i in range(index + 1)])
+                         ['\t'.join([str(summary[h][i]) for h in summary_header]) for i in range(len(summary['Sample']))])
 
 # Saving to tsv
 with open(f'pipeline_run_summary_{str(datetime.now()).replace(" ", "_").replace(":", "-")}.tsv', 'w') as summary_out:
