@@ -30,7 +30,7 @@ This should populate your resources directory with all required references and d
 ## Usage
 1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
 ```
-nextflow run main.nf -pipeline singularity # or docker
+nextflow run main.nf --pipeline singularity # or docker
 ```
 
 2. Run the pipeline on user data. 
@@ -38,7 +38,7 @@ nextflow run main.nf -pipeline singularity # or docker
   - Update the nextflow.config so that the reads_list parameter is now defined by the new list. 
   - Run the pipeline.
 ```
-nextflow run main.nf -pipeline singularity # or docker
+nextflow run main.nf --pipeline singularity # or docker
 ```
 
 ## Options
