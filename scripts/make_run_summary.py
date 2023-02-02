@@ -113,6 +113,10 @@ summary = {h : [] for h in summary_header}
 # Parse data for each sample specified in reads_list
 for index, row in enumerate(reads_list):
     
+    if not len(row):
+        
+        continue
+    
     # Extract basic info
     sample, batch, run, fastq_1 = [row.split('\t')[reads_list_header.index(element)] for element in ['sample', 'batch', 'run', 'fastq_1']]
     summary['Sample'].append(sample)
