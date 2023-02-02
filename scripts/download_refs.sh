@@ -95,7 +95,7 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar s
 ## 4. Kraken2 Database ##
 # download kraken2 database (requires ~100G) 
 # https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown
-${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads 24 --db ${kraken2_db_dir}
+# ${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads 24 --db ${kraken2_db_dir}
 
 ## 5. Create reads list input with full paths to test data.
 cd ../test_reads
