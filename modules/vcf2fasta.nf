@@ -9,7 +9,7 @@ process ConvertVCF {
   input:
   each variant_caller
   each path(reference)
-  tuple val(sample_id), path(vcf), val(batch), val(run)
+  tuple val(sample_id), path(vcf), val(batch)
 
   output:
   path "${sample_id}_${variant_caller}.fa", emit: unmasked_fasta

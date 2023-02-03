@@ -9,11 +9,11 @@ process VariantsLoFreq {
   input:
   each path(reference)
   each path(reference_index)
-  tuple val(sample_id), path(bam), val(batch), val(run)
+  tuple val(sample_id), path(bam), val(batch)
 
   output:
-  tuple val(sample_id), path("${sample_id}_lofreq_unfilt.vcf.gz"), val(batch), val(run), emit: lofreq_unfilt_vcf
-  tuple val(sample_id), path("${sample_id}_lofreq_filt.vcf.gz"), val(batch), val(run), emit: lofreq_filt_vcf
+  tuple val(sample_id), path("${sample_id}_lofreq_unfilt.vcf.gz"), val(batch), emit: lofreq_unfilt_vcf
+  tuple val(sample_id), path("${sample_id}_lofreq_filt.vcf.gz"), val(batch), emit: lofreq_filt_vcf
 
   """
   # Indexing bam

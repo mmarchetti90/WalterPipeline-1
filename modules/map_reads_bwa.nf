@@ -12,10 +12,10 @@ process MapReads_BWA {
   input:
   each path(reference_fasta)
   path(bwa_index)
-  tuple val(sample_id), path(read1), path(read2), val(batch), val(run)
+  tuple val(sample_id), path(read1), path(read2), val(batch)
 
   output:
-  tuple val(sample_id), path("${sample_id}_merged_mrkdup.bam"), val(batch), val(run), emit: bam_files
+  tuple val(sample_id), path("${sample_id}_merged_mrkdup.bam"), val(batch), emit: bam_files
   path "${sample_id}_mapping.log", emit: mapping_reports
   path "${sample_id}_coverage_stats.txt", emit: coverage_stats
   path "${sample_id}_marked_dup_metrics.txt", emit: dup_metrics

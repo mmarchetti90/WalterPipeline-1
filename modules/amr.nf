@@ -7,7 +7,7 @@ process RunAMR {
   publishDir "${projectDir}/results/${batch}/${sample_id}/stats", mode: "copy", pattern: "*_amr.csv"
 
   input:
-  tuple val(sample_id), path(bam), val(batch), val(run)
+  tuple val(sample_id), path(bam), val(batch)
 
   output:
   path "${sample_id}_amr.csv"

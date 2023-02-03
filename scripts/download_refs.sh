@@ -47,6 +47,7 @@ then
 	run_command="run"
 	bind_option="-v $(pwd):/home"
 	other_options="--rm"
+	image="ksw9/mtb-call"
 
 else
 
@@ -95,10 +96,11 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar s
 ## 4. Kraken2 Database ##
 # download kraken2 database (requires ~100G) 
 # https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown
-# ${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads 24 --db ${kraken2_db_dir}
+# Doesn't currently work due to some issues with Kraken 2 code
+#${container} ${run_command} ${bind_option} ${other_options} ${image} kraken2-build --standard --threads $SLURM_CPUS_ON_NODE --db ${kraken2_db_dir}
 
 ## 5. Create reads list input with full paths to test data.
 cd ../test_reads
 touch ../resources/reads_list.tsv
-echo -e "sample\tfastq_1\tfastq_2\tbatch\trun" >> ../resources/reads_list.tsv
-echo -e "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest\tTestRun" >> ../resources/reads_list.tsv
+echo "sample\tfastq_1\tfastq_2\tbatch" >> ../resources/reads_list.tsv
+echo "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest" >> ../resources/reads_list.tsv

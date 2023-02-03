@@ -12,12 +12,12 @@ process VariantsGATK {
   each path(dictionary)
   each path(bed)
   each path(bed_index)
-  tuple val(sample_id), path(bam), val(batch), val(run)
+  tuple val(sample_id), path(bam), val(batch)
 
   output:
-  tuple val(sample_id), path("${sample_id}_gatk.g.vcf.gz"), val(batch), val(run), emit: gatk_gvcf
-  tuple val(sample_id), path("${sample_id}_gatk_unfilt.vcf.gz"), val(batch), val(run), emit: gatk_vcf_unfilt
-  tuple val(sample_id), path("${sample_id}_gatk_filt.vcf.gz"), val(batch), val(run), emit: gatk_vcf_filt
+  tuple val(sample_id), path("${sample_id}_gatk.g.vcf.gz"), val(batch), emit: gatk_gvcf
+  tuple val(sample_id), path("${sample_id}_gatk_unfilt.vcf.gz"), val(batch), emit: gatk_vcf_unfilt
+  tuple val(sample_id), path("${sample_id}_gatk_filt.vcf.gz"), val(batch), emit: gatk_vcf_filt
 
   """
   # Indexing bam
