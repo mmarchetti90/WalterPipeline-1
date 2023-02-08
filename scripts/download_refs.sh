@@ -102,5 +102,5 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar s
 ## 5. Create reads list input with full paths to test data.
 cd ../test_reads
 touch ../resources/reads_list.tsv
-echo "sample\tfastq_1\tfastq_2\tbatch" >> ../resources/reads_list.tsv
-echo "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest" >> ../resources/reads_list.tsv
+echo -e "sample\tfastq_1\tfastq_2\tbatch" >> ../resources/reads_list.tsv
+echo -e "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest" >> ../resources/reads_list.tsv
