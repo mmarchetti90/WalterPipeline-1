@@ -81,7 +81,7 @@ All outputs are stored in the results directory, within the project directory. D
 
 ## Troubleshooting
 
-- Singularity uses the `$HOME` directory as the default cache. Set to `$TMPDIR` via: 
+- Singularity uses the `$HOME` directory as the default cache. This may cause errors if there are space limitations in `$HOME`. Set to a temporary directory `$TMPDIR` via: 
 ``` 
 export NXF_SINGULARITY_CACHEDIR=$TMPDIR
 export SINGULARITY_CACHEDIR=$TMPDIR
