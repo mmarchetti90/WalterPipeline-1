@@ -47,6 +47,7 @@ nextflow run main.nf -profile singularity # or docker
   - Run the pipeline.
 ```
 nextflow run main.nf -profile singularity # or docker
+sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script
 ```
 
 ## Options
