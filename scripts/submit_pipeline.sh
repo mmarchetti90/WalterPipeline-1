@@ -1,15 +1,15 @@
 #!/bin/bash
 
 #SBATCH --time=24:00:00
-#SBATCH --account=owner-guest
-#SBATCH --partition=redwood-guest
+#SBATCH --account=[add account]
+#SBATCH --partition=[add partition]
 #SBATCH --nodes=1
 #SBATCH --mem=0    
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=u6045141@utah.edu
-#SBATCH --job-name=TestRWWRC
+#SBATCH --mail-user=[add email]
+#SBATCH --job-name=test
 
-export WORKDIR=/scratch/general/pe-nfs1/u6045141/WalterPipeline
+export WORKDIR=[add working directory]
 export TMPDIR=$WORKDIR/tmp
 export NXF_SINGULARITY_CACHEDIR=$TMPDIR
 export SINGULARITY_CACHEDIR=$TMPDIR
