@@ -10,13 +10,13 @@
 #SBATCH --job-name=test
 
 export WORKDIR=[add working directory]
-export TMPDIR=$WORKDIR/tmp
-export NXF_SINGULARITY_CACHEDIR=$TMPDIR
-export SINGULARITY_CACHEDIR=$TMPDIR
+export TMPDIR=[add temp directory]
+export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
+export SINGULARITY_CACHEDIR=$WORKDIR/images
 export SINGULARITY_TMPDIR=$TMPDIR
 
 module load singularity
-module load nextflow
+module load java nextflow
 
 echo "Job started at $(date)"
 cd $WORKDIR
