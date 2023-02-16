@@ -4,7 +4,7 @@
 #SBATCH --account=[add account]
 #SBATCH --partition=[add partition]
 #SBATCH --nodes=1
-#SBATCH --mem=0    
+#SBATCH --mem=200    
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=[add email]
 #SBATCH --job-name=test
