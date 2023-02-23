@@ -63,7 +63,7 @@ fi
 
 ## 1. Reference genome ##
 # Download H37Rv reference fasta (alternatively, use efetch)
-${container} ${run_command} ${bind_option} ${other_options} ${image} /bin/bash -c "esearch -db nucleotide -query ${ncbi_id} | efetch -format fasta > ${ref_dir}${ref_name}"
+${container} ${run_command} ${bind_option} ${other_options} ${image} /bin/bash -c "esearch -db nucleotide -query ${ncbi_id} | efetch -format fasta" > ${ref_dir}${ref_name}
 
 # bwa index reference
 ${container} ${run_command} ${bind_option} ${other_options} ${image} bwa index ${ref_dir}${ref_name}
