@@ -84,8 +84,8 @@ All outputs are stored in the results directory, within the project directory. D
 
 - Singularity uses the `$HOME` directory as the default cache. This may cause errors if there are space limitations in `$HOME`. Specify a cache dir, `$TMPDIR`, via: 
 ``` 
-export WORKDIR=/uufs/chpc.utah.edu/common/home/walter-group1/tb/hh/WalterPipeline
-export TMPDIR=/scratch/general/vast/u6045141
+export WORKDIR=$(pwd)
+export TMPDIR=[set to temp directory]
 export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
 export SINGULARITY_CACHEDIR=$WORKDIR/images
 export SINGULARITY_TMPDIR=$TMPDIR
@@ -94,4 +94,5 @@ export SINGULARITY_TMPDIR=$TMPDIR
 - If Nextflow cannot pull Singularity image on the fly, pull manually, then run pipeline. 
 
 ```singularity pull ksw9-mtb-call.img docker://ksw9/mtb-call ```
+- If pipeline truncates after a few steps, confirm that all expected files have been downloaded and are in the resources directory. This may be caused by incomplete download (i.e. of refs/).
 
