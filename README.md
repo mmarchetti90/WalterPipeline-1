@@ -32,8 +32,10 @@ tar -xf k2_standard_20221209.tar.gz
 
 5. Modify the config file (nextflow.config):
   - update resources_dir (full path to directory resources)
-  - update clusterOptions parameter to make specific to cluster
+  - update clusterOptions parameter to make arguments specific to cluster
+    - Stanford SCG: clusterOptions = "-A jandr --partition batch -N 1 --time=4:00:00 --mem-per-cpu 64G"
   - update kraken_db with the path to a previously installed Kraken2 database
+  - Note: the nextflow.config file cluster arguments take precedence over the SLURM submission script parameters.
 
 ## Usage
 1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
