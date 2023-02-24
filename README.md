@@ -12,7 +12,7 @@ git clone https://github.com/ksw9/WalterPipeline.git
 2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Some clusters may have these pre-loaded.)
 ```
 module load singularity # or docker
-module load nextflow
+module load java nextflow 
 ```
 
 3. Run script to download references and resources, specify docker/sigularity (these, especially the Kraken2 database, are too large to include elsewhere). 
