@@ -1,22 +1,19 @@
 #!/bin/bash
-
 #SBATCH --time=24:00:00
-#SBATCH --account=[add account]
-#SBATCH --partition=[add partition]
 #SBATCH --nodes=1
-#SBATCH --mem=200    
+#SBATCH --account=owner-guest
+#SBATCH --partition=kingspeak-guest
+#SBATCH -o mtb-call_run-out-%j
+#SBATCH -e mtb-call_run-err-%j
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=[add email]
+#SBATCH --mail-user=katharine.walter@hsc.utah.edu
 #SBATCH --job-name=test
 
-export WORKDIR=[add working directory]
-export TMPDIR=[add temp directory]
-export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
-export SINGULARITY_CACHEDIR=$WORKDIR/images
-export SINGULARITY_TMPDIR=$TMPDIR
+module load nextflow/20.10 singularity/3.8.7
 
-module load singularity
-module load java nextflow
+export WORKDIR=/uufs/chpc.utah.edu/common/home/walter-group1/tb/hh/WalterPipeline
+export TMPDIR=/scratch/general/nfs1/u6045141/tmp
+export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
 
 echo "Job started at $(date)"
 cd $WORKDIR
