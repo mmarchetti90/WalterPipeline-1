@@ -52,7 +52,7 @@ then
 else
 
 	run_command="exec"
-	bind_option="bind_option="--bind $(pwd)"
+	bind_option="--bind $(pwd)"
 	other_options="--cleanenv"
 	image="docker://ksw9/mtb-call"
 	
