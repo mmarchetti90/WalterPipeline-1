@@ -28,7 +28,7 @@ process ConvertVCF {
   sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>${sample_id}/g" > ${sample_id}_${variant_caller}.fa
   
   # Output 2 - Consensus with ppe masking and quality filters applied (exclude indels)
-  bcftools consensus --include "(TYPE!='indel' & INFO/DP >= ${params.depth_threshold}) & (QUAL >= ${params.qual_threshold} | GT == '0')" --mask ${bed_path} --fasta-ref ${reference} --absent 'N' --missing 'N' ${vcf} | \
+  bcftools consensus --include "(TYPE!='indel' & INFO/DP >= ${params.depth_threshold}) & (QUAL >= ${params.qual_threshold} | GT == '0')" --mask ${bed_file} --fasta-ref ${reference} --absent 'N' --missing 'N' ${vcf} | \
   sed "s/>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome/>${sample_id}/g" > ${sample_id}_${variant_caller}_PPEmask.fa
   """
 
