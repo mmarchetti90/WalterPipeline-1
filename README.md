@@ -90,7 +90,7 @@ export WORKDIR=$(pwd)
 export TMPDIR=[set to temp directory]
 export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
 export SINGULARITY_CACHEDIR=$WORKDIR/images
-y
+
 ```
 - If Nextflow cannot pull Singularity image on the fly, pull manually, then run pipeline. 
 
