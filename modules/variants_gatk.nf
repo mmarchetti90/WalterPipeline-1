@@ -42,16 +42,23 @@ process VariantsGATK {
   --output ${sample_id}_gatk_unfilt.vcf.gz
 
   # Filter variants by depth and quality score (annotated as PASS or with filter name, not removed).
-  gatk VariantFiltration \
-  -R ${reference} \
-  -V ${sample_id}_gatk_unfilt.vcf.gz \
-  -O ${sample_id}_gatk_filt.vcf.gz \
-  --filter-name "lowDepth" \
-  --filter-expression "DP < ${params.depth_threshold}" \
-  --filter-name "lowQual" \
-  --filter-expression "QUAL < ${params.qual_threshold}" \
-  --mask-name "PPE" \
-  --mask ${bed}
+#  gatk VariantFiltration \
+#  -R ${reference} \
+#  -V ${sample_id}_gatk_unfilt.vcf.gz \
+#  -O ${sample_id}_gatk_filt.vcf.gz \
+#  --filter-name "lowDepth" \
+#  --filter-expression "DP < ${params.depth_threshold}" \
+#  --filter-name "lowQual" \
+#  --filter-expression "QUAL > ${params.qual_threshold} || RGQ > ${params.qual_threshold}" \
+#  --invert-filter-expression \
+#  --mask-name "PPE" \
+#  --mask ${bed}
+  # GATK: QUAL filter filters QUAL of '.' (at ref sites) as below the QUAL threshold, incorrectly excluding them
+  
+  # Use bcftools to filter - can only apply one expression at a time.
+  bcftools filter --soft-filter 'lowQual' --exclude '(QUAL < ${params.qual_threshold} && QUAL != ".") || RGQ < ${params.qual_threshold}' ${sample_id}_gatk_unfilt.vcf.gz |
+    bcftools filter --soft-filter 'lowDepth' --exclude 'FORMAT/DP < ${params.depth_threshold}' -O z -o ${sample_id}_gatk_filt.vcf.gz  
+
   """
 
 }

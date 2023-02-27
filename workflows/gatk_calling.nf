@@ -33,10 +33,10 @@ workflow GATK {
 
   // CONVERTING VCF TO FASTA -------------- //
 
-  ConvertVCF("GATK", reference_fasta, VariantsGATK.out.gatk_vcf_filt,bed_file, bed_file_index)
+  ConvertVCF("gatk", reference_fasta, VariantsGATK.out.gatk_vcf_filt,bed_file, bed_file_index)
 
   // ANNOTATE GATK VCF -------------------- //
 
-  AnnotateVCF("GATK", reference_fasta, VariantsGATK.out.gatk_vcf_filt)
+  AnnotateVCF("gatk", reference_fasta, VariantsGATK.out.gatk_vcf_filt)
 
 }

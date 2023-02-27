@@ -11,7 +11,7 @@
 
 module load nextflow/20.10 singularity/3.8.7
 
-export WORKDIR=/uufs/chpc.utah.edu/common/home/walter-group1/tb/hh/WalterPipeline
+export WORKDIR=/uufs/chpc.utah.edu/common/home/walter-group1/tb/WalterPipeline
 export TMPDIR=/scratch/general/nfs1/u6045141/tmp
 export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
 
