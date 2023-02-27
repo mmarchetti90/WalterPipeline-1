@@ -1,6 +1,6 @@
-# *M. tuberculosis*  variant identification pipeline
+# *M. tuberculosis* variant identification pipeline
 
-Pipeline for *M. tuberculosis* variant identification from short-read data for epidemiology and phylogenetics. Briefly, this pipeline takes raw short-read Illumina data, pre-processes reads (read adapter trimming and taxonomic filtering), maps reads to a provided reference genome, calls variants, and outputs consensus FASTA sequences for downstream applications. The pipeline is written in Nextflow, so modules are adaptable. User options allow for tailoring of the pipeline such as setting custom filters and choosing a reference genome.
+Pipeline for *M. tuberculosis* variant identification from short-read data for epidemiology and phylogenetics. Briefly, this pipeline takes raw short-read Illumina data, pre-processes reads (read adapter trimming and taxonomic filtering), maps reads to a provided reference genome, calls variants, and outputs consensus FASTA sequences for downstream applications. The pipeline is written in Nextflow, so modules are adaptable. User options allow for tailoring of the pipeline such as setting custom filters and choosing a reference genome. Users can [benchmark](benchmark.md) this pipeline with their chosen filters on simulated data and truth VCFs. 
 
 ## Installation & set-up
 
@@ -15,9 +15,8 @@ module load singularity # or docker
 module load java nextflow 
 ```
 
-3. Run script to download references and resources, specify docker/sigularity (these, especially the Kraken2 database, are too large to include elsewhere). 
+3. Run script to download references and resources, specify docker/sigularity.
 ```
-# Run download_refs.sh.
 cd WalterPipeline 
 ./scripts/download_refs.sh singularity # or docker
 ```
@@ -34,8 +33,8 @@ tar -xf k2_standard_20221209.tar.gz
   - update resources_dir (full path to directory resources)
   - update clusterOptions parameter to make arguments specific to cluster
     - Stanford SCG: clusterOptions = "-A jandr --partition batch -N 1 --time=4:00:00 --mem-per-cpu 64G"
-  - update kraken_db with the path to a previously installed Kraken2 database
-  - Note: the nextflow.config file cluster arguments take precedence over the SLURM submission script parameters.
+  - if you are using a previously installed Kraken2 database, update kraken_db with the path
+  - Note: the nextflow.config clusterOptions file take precedence over the SLURM submission script parameters.
 
 ## Usage
 1. Run the pipeline on the test data (truncated FASTQ files) included in the test_data directory. Include any user options here. The Docker image will be pulled automatically by running the pipeline the first time.
@@ -52,18 +51,6 @@ nextflow run main.nf -profile singularity # or docker
 sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script
 ```
 
-## Options
-
-There are several user options which can be modified on the command line or in the nextflow.config file (command line options take precedence).
-- mapper (bwa/bowtie2): defines mapping algorithm to be used (default = bwa).
-- run_lofreq (true/false): In addition to calling variants with GATK, will call low frequency minority variants with LoFreq.
-- depth_threshold: defines minimum site depth for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 5)
-- qual_threshold: defines the minimum site quality score for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 20)
-- ploidy: defines ploidy for GATK variant calling (currently, only tested for ploidy = 1)
-- threads: defines available threads (default = 4)
-- nextseq (true/false): Use of NextSeq sequencing platform? (default = false). Nextseq has been found to [overcall](https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md) G bases at the 3' end; if this option is turned on, TrimGalore will ignore quality scores of G bases in the trimming step. 
-- nextseq_qual_threshold: If the above parameter is true, defines the quality threshold for trimming (default = 20).
-
 ## Outputs
 
 All outputs are stored in the results directory, within the project directory. Directory structure mirrors the input reads file, with directories organized by sequencing run, then sample.
@@ -79,8 +66,22 @@ All outputs are stored in the results directory, within the project directory. D
 ```
 ## Example data
 
-- Truncated paired-end fastq files are in the test_data directory.
+The test_data directory includes two datasets: 
+1. test_data/test: Truncated paired-end fastq files for use to confirm pipeline runs.
 - An input sample .tsv file list is located at config/test_data.tsv.
+2. test_data/benchmark: Simulated Illumina reads for pipeline [benchmarking](benchmark.md).
+
+## Options
+
+There are several user options which can be modified on the command line or in the nextflow.config file (command line options take precedence).
+- mapper (bwa/bowtie2): defines mapping algorithm to be used (default = bwa).
+- run_lofreq (true/false): In addition to calling variants with GATK, will call low frequency minority variants with LoFreq.
+- depth_threshold: defines minimum site depth for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 5)
+- qual_threshold: defines the minimum site quality score for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 20)
+- ploidy: defines ploidy for GATK variant calling (currently, only tested for ploidy = 1)
+- threads: defines available threads (default = 4)
+- nextseq (true/false): Use of NextSeq sequencing platform? (default = false). Nextseq has been found to [overcall](https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md) G bases at the 3' end; if this option is turned on, TrimGalore will ignore quality scores of G bases in the trimming step. 
+- nextseq_qual_threshold: If the above parameter is true, defines the quality threshold for trimming (default = 20).
 
 ## Troubleshooting
 
