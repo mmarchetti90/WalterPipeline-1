@@ -15,6 +15,7 @@ bwa_index_dir=bwa_index/
 bowtie2_index_dir=bowtie2_index/
 gatk_dictionary_dir=gatk_dictionary/
 kraken2_db_dir=kraken_db/
+input_dir=resources/input/
 
 # Define main variables
 ref_name="H37Rv.fasta"
@@ -31,6 +32,7 @@ mkdir -p ${bwa_index_dir}
 mkdir -p ${bowtie2_index_dir}
 mkdir -p ${gatk_dictionary_dir}
 mkdir -p ${kraken2_db_dir}
+mkdir -p ${input_dir}
 
 # Define run command and options
 if [ "$container" = "docker" ]
@@ -101,6 +103,12 @@ ${container} ${run_command} ${bind_option} ${other_options} ${image} java -jar s
 
 ## 5. Create reads list input with full paths to test data.
 cd ../test_reads
-touch ../resources/reads_list.tsv
-echo -e "sample\tfastq_1\tfastq_2\tbatch" >> ../resources/reads_list.tsv
-echo -e "PipelineTesting\t$(pwd)/test_R1_001.fastq.gz\t$(pwd)/test_R2_001.fastq.gz\tTest" >> ../resources/reads_list.tsv
+
+echo -e "sample\tfastq_1\tfastq_2\tbatch" > ../resources/input/reads_list.tsv
+echo -e "PipelineTesting\t$(pwd)/test/test_R1_001.fastq.gz\t$(pwd)/test/test_R2_001.fastq.gz\tTest" >> ../resources/input/reads_list.tsv
+
+## 6. Create reads list input with full paths to benchmark data. 
+echo -e "sample\tfastq_1\tfastq_2\tbatch" > ../resources/input/benchmarking_reads_list.tsv
+echo -e "AE000516\t$(pwd)/benchmark/AE000516_sims1.fq.gz\t$(pwd)/benchmark/AE000516_sims1.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
+echo -e "H37Rv\t$(pwd)/benchmark/H37Rv_sims1.fq.gz\t$(pwd)/benchmark/H37Rv_sims1.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
+
