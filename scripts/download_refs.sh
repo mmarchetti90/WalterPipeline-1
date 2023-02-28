@@ -109,6 +109,6 @@ echo -e "PipelineTesting\t$(pwd)/test/test_R1_001.fastq.gz\t$(pwd)/test/test_R2_
 
 ## 6. Create reads list input with full paths to benchmark data. 
 echo -e "sample\tfastq_1\tfastq_2\tbatch" > ../resources/input/benchmarking_reads_list.tsv
-echo -e "AE000516\t$(pwd)/benchmark/AE000516_sims1.fq.gz\t$(pwd)/benchmark/AE000516_sims1.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
-echo -e "H37Rv\t$(pwd)/benchmark/H37Rv_sims1.fq.gz\t$(pwd)/benchmark/H37Rv_sims1.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
+echo -e "AE000516\t$(pwd)/benchmark/AE000516_sims1.fq.gz\t$(pwd)/benchmark/AE000516_sims2.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
+echo -e "H37Rv\t$(pwd)/benchmark/H37Rv_sims1.fq.gz\t$(pwd)/benchmark/H37Rv_sims2.fq.gz\tbenchmark" >> ../resources/input/benchmarking_reads_list.tsv
 

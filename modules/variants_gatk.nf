@@ -29,7 +29,7 @@ process VariantsGATK {
   -R ${reference} \
   -ploidy ${params.ploidy} \
   -I ${bam} \
-  -ERC GVCF \
+  -ERC BP_RESOLUTION \
   --output-mode EMIT_ALL_CONFIDENT_SITES \
   -O ${sample_id}_gatk.g.vcf.gz
 
