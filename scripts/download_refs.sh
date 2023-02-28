@@ -15,7 +15,7 @@ bwa_index_dir=bwa_index/
 bowtie2_index_dir=bowtie2_index/
 gatk_dictionary_dir=gatk_dictionary/
 kraken2_db_dir=kraken_db/
-input_dir=resources/input/
+input_dir=input/
 
 # Define main variables
 ref_name="H37Rv.fasta"
