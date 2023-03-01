@@ -11,7 +11,7 @@ git clone https://github.com/ksw9/WalterPipeline.git
 
 2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Some clusters may have these pre-loaded.)
 ```
-module load singularity # or docker
+module load singularity # or docker (not necessary on Stanford SCG)
 module load java nextflow 
 ```
 
