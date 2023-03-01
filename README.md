@@ -25,8 +25,8 @@ This should populate your resources directory with required references and datab
 4. Download the most up-to-date Kraken2 [database](https://benlangmead.github.io/aws-indexes/k2) to `resources/kraken_db` for taxonomic filtering. The Standard kraken2 databse is 62Gb, if you have space constraints, use the Standard-8 or Standard-16. (If you are using a pre-built Kraken2 database, skip this step.)
 ```
 cd resources/kraken_db
-wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20221209.tar.gz 
-tar -xf k2_standard_20221209.tar.gz 
+wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_08gb_20221209.tar.gz
+tar -xf k2_standard_08gb_20221209.tar.gz
 ```
 
 5. Modify the config file (nextflow.config):
