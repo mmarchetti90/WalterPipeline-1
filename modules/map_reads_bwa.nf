@@ -22,17 +22,19 @@ process MapReads_BWA {
 
   """
   # Get machine id_lane from SRA read identifier (old Illumina fastq format)
-  #seqid=\$(zcat ${read1} | head -n 1)
-  #seqid="\$(echo \$seqid | cut -d' ' -f1)"
-  #seqid="\$(echo \$seqid | cut -d':' -f3)"
-  #id_lane=\${seqid:-readgroup1} # default is "readgroup1"
   read_name=\$(zcat ${read1} | head -n 1)
+  read_name=\$(echo \${read_name} | cut -d' ' -f1)
   flowcell="\$(echo \${read_name} | cut -d: -f1-2)"
   barcode="\$(echo \${read_name} | cut -d: -f3)"
   lane="\$(echo \${read_name} | cut -d: -f4)"
-  ID=\${flowcell}'.'\${lane}
-  PU=\${flowcell}'.'\${barcode}'.'\${lane}
-
+  if [ "\$flowcell" == "\$lane" ]; then 
+    ID=\${read_name}
+    PU=\${read_name}
+  else 
+    ID="\${flowcell}'.'\${lane}"
+    PU="\${flowcell}'.'\${barcode}'.'\${lane}"
+  fi
+  
   # Mapping with BWA
   bwa mem \
   -t \$SLURM_CPUS_ON_NODE \
@@ -55,6 +57,7 @@ process MapReads_BWA {
   -O ${sample_id}_coverage_stats.txt
 
   # Add/replace read groups for post-processing with GATK
+  echo \$ID ${params.library} \$PU ${params.seq_platform} $sample_id
   picard AddOrReplaceReadGroups \
   -INPUT temp.bam \
   -OUTPUT temp_rg.bam \
@@ -62,7 +65,8 @@ process MapReads_BWA {
   -RGLB ${params.library} \
   -RGPU \${PU} \
   -RGPL ${params.seq_platform} \
-  -RGSM ${sample_id}
+  -RGSM ${sample_id} \
+  --VERBOSITY DEBUG
 
   # Mark duplicates & produce library complexity metrics
   gatk MarkDuplicates \
