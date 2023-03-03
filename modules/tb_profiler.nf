@@ -2,7 +2,7 @@ process TbProfiler {
 
   // TB Profiler to assign sub-lineage
   
-  label 'slurm'
+  label 'tb_profiler'
 
   publishDir "${projectDir}/results/${batch}/${sample_id}/stats", mode: "copy", pattern: "*_lineageSpo_gatk.{csv,json}"
   publishDir "${projectDir}/results/${batch}/${sample_id}/stats", mode: "copy", pattern: "*.errlog.txt"
