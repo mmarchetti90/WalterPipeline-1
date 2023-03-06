@@ -20,16 +20,19 @@ process VariantsLoFreq {
   samtools index ${bam}
 
   # Call variants with LoFreq, no filter
-  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq_unfilt.vcf ${bam}
+  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq_unfilt_tmp.vcf ${bam}
 
-  # Bgzipping
-  bgzip ${sample_id}_lofreq_unfilt.vcf
+  # Add FORMAT and SAMPLE fields for full VCF formatting (required for later annotation)
+  sed -e '6i##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">' -e "s|FILTER\tINFO|FILTER\tINFO\tFORMAT\t${NAME}|g" ${sample_id}_lofreq_unfilt_tmp.vcf | \
+  awk -F'\t' -v genotype=${GENOTYPE} -v OFS="\t" '/^[^#]/{ $9 = "GT"; $10 = genotype }1' | bgzip > ${sample_id}_lofreq_unfilt.vcf.gz
 
   # Call variants with LoFreq, default filter
-  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE -f ${reference} -o ${sample_id}_lofreq_filt.vcf ${bam}
+  lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE -f ${reference} -o ${sample_id}_lofreq_filt_tmp.vcf ${bam}
 
-  # Bgzipping
-  bgzip ${sample_id}_lofreq_filt.vcf
+  # Add FORMAT and SAMPLE fields for full VCF formatting (required for later annotation)
+  sed -e '6i##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">' -e "s|FILTER\tINFO|FILTER\tINFO\tFORMAT\t${NAME}|g" ${sample_id}_lofreq_filt_tmp.vcf | \
+  awk -F'\t' -v genotype=${GENOTYPE} -v OFS="\t" '/^[^#]/{ $9 = "GT"; $10 = genotype }1' | bgzip > ${sample_id}_lofreq_filt.vcf.gz
+
   """
 
 }
