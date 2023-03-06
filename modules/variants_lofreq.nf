@@ -22,6 +22,9 @@ process VariantsLoFreq {
   # Call variants with LoFreq, no filter
   lofreq call-parallel --call-indels --pp-threads \$SLURM_CPUS_ON_NODE --no-default-filter -f ${reference} -o ${sample_id}_lofreq_unfilt.vcf ${bam}
 
+  # Add FORMAT and SAMPLE fields for full VCF formatting (required for later annotation)
+  
+  
   # Bgzipping
   bgzip ${sample_id}_lofreq_unfilt.vcf
 
