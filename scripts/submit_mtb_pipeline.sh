@@ -5,9 +5,8 @@
 #SBATCH --partition=kingspeak-guest
 #SBATCH -o mtb-call_run-out-%j
 #SBATCH -e mtb-call_run-err-%j
-#SBATCH --mail-type=ALL
 #SBATCH --mail-user=katharine.walter@hsc.utah.edu
-#SBATCH --job-name=test
+#SBATCH --job-name=vitoria
 
 module load nextflow/20.10 singularity/3.8.7
 

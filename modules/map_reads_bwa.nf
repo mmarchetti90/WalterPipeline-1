@@ -23,6 +23,7 @@ process MapReads_BWA {
   """
   # Get machine id_lane from SRA read identifier (old Illumina fastq format)
   read_name=\$(zcat ${read1} | head -n 1)
+  read_name=\${read_name/@}
   read_name=\$(echo \${read_name} | cut -d' ' -f1)
   flowcell="\$(echo \${read_name} | cut -d: -f1-2)"
   barcode="\$(echo \${read_name} | cut -d: -f3)"
@@ -57,7 +58,6 @@ process MapReads_BWA {
   -O ${sample_id}_coverage_stats.txt
 
   # Add/replace read groups for post-processing with GATK
-  echo \$ID ${params.library} \$PU ${params.seq_platform} $sample_id
   picard AddOrReplaceReadGroups \
   -INPUT temp.bam \
   -OUTPUT temp_rg.bam \
