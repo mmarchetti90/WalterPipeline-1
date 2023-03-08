@@ -23,6 +23,6 @@ workflow LOFREQ {
 
   // ANNOTATE GATK VCF -------------------- //
 
-  AnnotateVCF("LoFreq", reference_fasta, VariantsLoFreq.out.lofreq_filt_vcf)
+  AnnotateVCF("lofreq", reference_fasta, VariantsLoFreq.out.lofreq_filt_vcf)
 
 }
