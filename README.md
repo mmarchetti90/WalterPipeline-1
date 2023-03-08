@@ -6,7 +6,7 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 
 1. Clone Github repo.
 ```
-git clone https://github.com/ksw9/WalterPipeline.git
+git clone https://github.com/ksw9/mtb-vars.git
 ```
 
 2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Some clusters may have these pre-loaded.)
@@ -17,7 +17,7 @@ module load java nextflow
 
 3. Run script to download references and resources, specify docker/sigularity.
 ```
-cd WalterPipeline 
+cd mtb-vars
 ./scripts/download_refs.sh singularity # or docker
 ```
 This should populate your resources directory with required references and databases.
@@ -45,10 +45,11 @@ nextflow run main.nf -profile singularity # or docker
 2. Run the pipeline on user data. 
   - Create a tab-delimited file with sample name, full path to FASTQ read 1, full path to FASTQ read 2, batch name, run name (format like data/reads_list.tsv). 
   - Update the nextflow.config so that the reads_list parameter is now defined by the new list. 
+  -update the scripts/submit_mtb_pipeline.sh job submission script with job name, email, email preferences. 
   - Run the pipeline.
 ```
 nextflow run main.nf -profile singularity # or docker
-sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script
+sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script. Use scripts/submit_mtb_pipeline_scg.sh at Stanford.
 ```
 
 ## Outputs
