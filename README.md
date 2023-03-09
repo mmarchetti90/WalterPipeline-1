@@ -75,6 +75,7 @@ The test_data directory includes two datasets:
 ## Options
 
 There are several user options which can be modified on the command line or in the nextflow.config file (command line options take precedence).
+- variants_only (true/false): Output GATK VCF including only variant sites with respect to the reference genome (default) or output all positions (variants_only = false). If true, this means the resulting FASTA file will include the consensus allele at all non-variant sites, which may be an incorrect assumption at low or no coverage positions (i.e. the REF allele will be filled in rather than an N). 
 - mapper (bwa/bowtie2): defines mapping algorithm to be used (default = bwa).
 - run_lofreq (true/false): In addition to calling variants with GATK, will call low frequency minority variants with LoFreq.
 - depth_threshold: defines minimum site depth for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 5)
