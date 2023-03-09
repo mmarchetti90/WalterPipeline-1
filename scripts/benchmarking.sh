@@ -18,7 +18,7 @@ mamba install -n happy pandas python=2
 # Follow instructions from Github to make (use python2)
 
 ## Organize directories
-ref_dir=refs/
+ref_dir=resources/refs/
 mkdir $ref_dir
 results_dir=results/
 mkdir $results_dir
@@ -103,18 +103,18 @@ for p1 in ${data_dir}*_sims1.fq.gz; do
 done 
 
 # Soft link to resources directory
-ln -s /uufs/chpc.utah.edu/common/home/walter-group1/tb/benchmark/data/benchmarking_reads_list.tsv  /uufs/chpc.utah.edu/common/home/walter-group1/tb/WalterPipeline/resources/input/benchmarking_reads_list.tsv
+ln -s /uufs/chpc.utah.edu/common/home/walter-group1/tb/benchmark/data/benchmarking_reads_list.tsv  /uufs/chpc.utah.edu/common/home/walter-group1/tb/mtb-call2/resources/input/benchmarking_reads_list.tsv
 
 ## 7. Call variants with pipeline ##
-cd /uufs/chpc.utah.edu/common/home/walter-group1/tb/WalterPipeline
+cd /uufs/chpc.utah.edu/common/home/walter-group1/tb/mtb-call2
 
 ## 8. Run hap.py ##
 source activate happy
 python2 bin/hap.py --version
 happy=/uufs/chpc.utah.edu/common/home/walter-group1/repos/hap.py-build/bin/hap.py
-truth_vcf=${results_dir}${prefix}_fmt.vcf.gz
-query_vcf=../WalterPipeline/results/benchmark/AE000516/vars/AE000516_gatk_filt.vcf.gz 
-bed=refs/bed/H37Rv_ppe.bed.gz
+truth_vcf=test_reads/benchmark/${prefix}_fmt.vcf.gz
+query_vcf=results/benchmark/AE000516/vars/AE000516_gatk_filt.vcf.gz 
+bed=resources/bed/H37Rv_ppe.bed.gz
 
 # a. Performance genome-wide using most sensitive truth VCF set
 ${happy} ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom
@@ -122,7 +122,7 @@ ${happy} ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom
 ${happy} ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom -T ^$bed
 
 # Redefine truth set to be more stringent
-truth_vcf=${results_dir}${prefix}_c1500_fmt.vcf.gz
+truth_vcf=test_reads/benchmark/${prefix}_c1500_fmt.vcf.gz
 
 # c. Performance genome-wide using most sensitive truth VCF set
 ${happy} ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom
