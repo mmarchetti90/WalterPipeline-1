@@ -29,7 +29,7 @@ hap.py ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom
 hap.py ${truth_vcf} ${query_vcf} -o perf -r ${ref_dir}${ref_name} --set-gt hom -T ^${bed}
 ```
 - We report a recall of 91.4% (845/925) and precision of 99.5% (845/849) when excluding the PE/PPE genes with the pipeline default filters.
-- We report a recall of 77.4% (1162/1502) and precision of 93.8% (1162/1223) when including the full gneome with the pipeline default filters. 
+- We report a recall of 77.4% (1162/1502) and precision of 93.6% (1162/1225) when including the full gneome with the pipeline default filters. 
 
 4. Evaluate specificity of variant identification in the H37Rv data. There should be 0 SNPs identified in the H37Rv data (i.e. 100% specificity).
 ```
