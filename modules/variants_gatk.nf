@@ -2,7 +2,7 @@ process VariantsGATK {
 
   // Variant calling with GATK
   
-  label 'slurm'
+  label 'variantcalling'
 
   publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*_{gatk.g,gatk_unfilt,gatk_filt}.vcf.gz"
 

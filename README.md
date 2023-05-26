@@ -6,7 +6,7 @@ Pipeline for *M. tuberculosis* variant identification from short-read data for e
 
 1. Clone Github repo.
 ```
-git clone https://github.com/ksw9/WalterPipeline.git
+git clone https://github.com/ksw9/mtb-call2.git
 ```
 
 2. Load your HPC's container tool (i.e. Docker or Singularity) and nextflow. (Some clusters may have these pre-loaded.)
@@ -17,7 +17,7 @@ module load java nextflow
 
 3. Run script to download references and resources, specify docker/sigularity.
 ```
-cd WalterPipeline 
+cd mtb-call2
 ./scripts/download_refs.sh singularity # or docker
 ```
 This should populate your resources directory with required references and databases.
@@ -32,7 +32,7 @@ tar -xf k2_standard_08gb_20221209.tar.gz
 5. Modify the config file (nextflow.config):
   - update resources_dir (full path to directory resources)
   - update clusterOptions parameter to make arguments specific to cluster
-    - Stanford SCG: clusterOptions = "-A jandr --partition batch -N 1 --time=4:00:00 --mem-per-cpu 64G"
+    - Stanford SCG: clusterOptions = "-A jandr --partition batch -N 1 --time=4:00:00 --mem 96g --mem-per-cpu 64G"
   - if you are using a previously installed Kraken2 database, update kraken_db with the path
   - Note: the nextflow.config clusterOptions file take precedence over the SLURM submission script parameters.
 
@@ -45,10 +45,11 @@ nextflow run main.nf -profile singularity # or docker
 2. Run the pipeline on user data. 
   - Create a tab-delimited file with sample name, full path to FASTQ read 1, full path to FASTQ read 2, batch name, run name (format like data/reads_list.tsv). 
   - Update the nextflow.config so that the reads_list parameter is now defined by the new list. 
+  -update the scripts/submit_mtb_pipeline.sh job submission script with job name, email, email preferences. 
   - Run the pipeline.
 ```
 nextflow run main.nf -profile singularity # or docker
-sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script
+sbatch scripts/submit_mtb_pipeline.sh # submit via a SLURM job scheduler script. Use scripts/submit_mtb_pipeline_scg.sh at Stanford.
 ```
 
 ## Outputs
@@ -74,6 +75,7 @@ The test_data directory includes two datasets:
 ## Options
 
 There are several user options which can be modified on the command line or in the nextflow.config file (command line options take precedence).
+- variants_only (true/false): Output GATK VCF including only variant sites with respect to the reference genome (default) or output all positions (variants_only = false). If true, this means the resulting FASTA file will include the consensus allele at all non-variant sites, which may be an incorrect assumption at low or no coverage positions (i.e. the REF allele will be filled in rather than an N). 
 - mapper (bwa/bowtie2): defines mapping algorithm to be used (default = bwa).
 - run_lofreq (true/false): In addition to calling variants with GATK, will call low frequency minority variants with LoFreq.
 - depth_threshold: defines minimum site depth for calling an allele (either variant or reference) that will be applied to generate a consensus sequence (default = 5)
@@ -88,7 +90,6 @@ There are several user options which can be modified on the command line or in t
 - Singularity uses the `$HOME` directory as the default cache. This may cause errors if there are space limitations in `$HOME`. Specify a cache dir to store the image via: 
 ``` 
 export WORKDIR=$(pwd)
-export TMPDIR=[set to temp directory]
 export NXF_SINGULARITY_CACHEDIR=$WORKDIR/images
 export SINGULARITY_CACHEDIR=$WORKDIR/images
 

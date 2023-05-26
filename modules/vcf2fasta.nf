@@ -2,7 +2,7 @@ process ConvertVCF {
 
   // Convert single sample VCF to fasta
 
-  label 'slurm'
+  label 'variantcalling'
 
   publishDir "${projectDir}/results/${batch}/${sample_id}/fasta", mode: "copy", pattern: "*.fa"
 

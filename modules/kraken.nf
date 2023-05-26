@@ -2,7 +2,7 @@ process Kraken {
 
   // Filter reads taxonomically with Kraken
   
-  label 'slurm'
+  label 'kraken2'
 
   //publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kr_{1,2}.fq.gz"
   publishDir "${projectDir}/results/${batch}/${sample_id}/kraken", mode: "copy", pattern: "*_kraken.report"

@@ -2,7 +2,7 @@ process VariantsLoFreq {
 
   // Variant calling with LoFreq
   
-  label 'slurm'
+  label 'variantcalling'
 
   publishDir "${projectDir}/results/${batch}/${sample_id}/vars", mode: "copy", pattern: "*{_lofreq_unfilt,_lofreq_filt}.vcf.gz"
 
