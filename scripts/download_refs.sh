@@ -41,7 +41,7 @@ then
 	run_command="run"
 	bind_option="-v $(pwd):/home"
 	other_options="--rm"
-	image_base="ksw9/mtb-call"
+	image="ksw9/mtb-call"
 
 elif [ "$container" = "podman" ]
 then
