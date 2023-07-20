@@ -89,6 +89,9 @@ reads_list_file = argv[argv.index("--reads_list_file") + 1]
 
 # Get pipeline run name from reads list file
 run_name = basename(reads_list_file).replace('.tsv', '').replace('reads_list', '')
+if not len(run_name):
+
+    run_name = 'pipeline'
 
 # Import reads/sample list
 reads_list = open(reads_list_file).read().split('\n')

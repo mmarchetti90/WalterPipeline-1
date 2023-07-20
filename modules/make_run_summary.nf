@@ -4,7 +4,7 @@ process SummarizeRun {
   
   label 'makesummary'
 
-  publishDir "${projectDir}/results", mode: "copy", pattern: "pipeline_run_summary_*.tsv"
+  publishDir "${projectDir}/results", mode: "copy", pattern: "*_run_summary_*.tsv"
 
   input:
   path summary_script
