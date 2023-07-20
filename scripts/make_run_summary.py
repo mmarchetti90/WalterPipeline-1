@@ -79,12 +79,16 @@ def parseResistanceReport(report_name):
 ### ------------------MAIN------------------ ###
 
 from datetime import datetime
+from os.path import basename
 from sys import argv
 
 ### PARSE DATA ----------------------------- ###
 
 # Import reads/sample list file name
 reads_list_file = argv[argv.index("--reads_list_file") + 1]
+
+# Get pipeline run name from reads list file
+run_name = basename(reads_list_file).replace('.tsv', '').replace('reads_list', '')
 
 # Import reads/sample list
 reads_list = open(reads_list_file).read().split('\n')
@@ -122,25 +126,59 @@ for index, row in enumerate(reads_list):
     summary['Batch'].append(batch)
     
     # Parse R1 TrimGalore report
-    raw_reads, reads_with_adapters, trimmed_reads = parseTrimGaloreReport(f'{fastq_1.split("/")[-1]}_trimming_report.txt')
+    try:
+
+        raw_reads, reads_with_adapters, trimmed_reads = parseTrimGaloreReport(f'{fastq_1.split("/")[-1]}_trimming_report.txt')
+    
+    except:
+
+        raw_reads, reads_with_adapters, trimmed_reads = 'NA', 'NA', 'NA'
+
     summary['Raw_Reads'].append(raw_reads)
     summary['Raw_Reads_With_Adapters'].append(reads_with_adapters)
     summary['Trimmed_Raw_Reads'].append(trimmed_reads)
     
     # Parse info from Kraken2 report
-    raw_reads = parseKraken2Report(f'{sample}_kraken.report')
+    try:
+
+        raw_reads = parseKraken2Report(f'{sample}_kraken.report')
+    
+    except:
+
+        raw_reads = 'NA'
+
     summary['Kraken2_Raw_Reads'].append(raw_reads)
     
     # Parse mapping info
-    percentage_mapped_reads = parseMappingReport(f'{sample}_mapping.log')
+    try:
+
+        percentage_mapped_reads = parseMappingReport(f'{sample}_mapping.log')
+
+    except:
+
+        percentage_mapped_reads = 'NA'
+
     summary['Mapping_Percentage'].append(percentage_mapped_reads)
     
     # Parse duplication info
-    duplication_percentage = parseDuplicationReport(f'{sample}_marked_dup_metrics.txt')
+    try:
+
+        duplication_percentage = parseDuplicationReport(f'{sample}_marked_dup_metrics.txt')
+    except:
+
+        duplication_percentage = 'NA'
+
     summary['Duplication_Percentage'].append(duplication_percentage)
     
     # Parse coverage info
-    mean, median, sd, cov_5, cov_10, cov_100_plus = parseCoverageReport(f'{sample}_coverage_stats.txt')
+    try:
+
+        mean, median, sd, cov_5, cov_10, cov_100_plus = parseCoverageReport(f'{sample}_coverage_stats.txt')
+
+    except:
+
+        mean, median, sd, cov_5, cov_10, cov_100_plus = 'NA', 'NA', 'NA', 'NA', 'NA', 'NA'
+
     summary['Coverage_Mean'].append(mean)
     summary['Coverage_Median'].append(median)
     summary['Coverage_SD'].append(sd)
@@ -149,7 +187,14 @@ for index, row in enumerate(reads_list):
     summary['Coverage_100+_Percentage'].append(cov_100_plus)
 
     # Parse Tb-Profiler report
-    strain, drug_resistance = parseResistanceReport(f'{sample}_lineageSpo_gatk.csv')
+    try:
+
+        strain, drug_resistance = parseResistanceReport(f'{sample}_lineageSpo_gatk.csv')
+
+    except:
+
+        strain, drug_resistance = 'NA', 'NA'
+
     summary['Strain'].append(strain)
     summary['Drug_Resistance'].append(drug_resistance)
 
@@ -160,5 +205,6 @@ summary_text = '\n'.join(['\t'.join(summary_header)] +
                          ['\t'.join([str(summary[h][i]) for h in summary_header]) for i in range(len(summary['Sample']))])
 
 # Saving to tsv
-with open(f'pipeline_run_summary_{str(datetime.now()).replace(" ", "_").replace(":", "-")}.tsv', 'w') as summary_out:
+with open(f'{run_name}_run_summary_{str(datetime.now()).replace(" ", "_").replace(":", "-")}.tsv', 'w') as summary_out:
+    
     summary_out.write(summary_text)
