@@ -17,7 +17,7 @@ process SummarizeRun {
   path tbprofiler_reports
 
   output:
-  path "pipeline_run_summary_*.tsv"
+  path "*_run_summary_*.tsv"
 
   """
   python ${summary_script} --reads_list_file ${reads_list}
