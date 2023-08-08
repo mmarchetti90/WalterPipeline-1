@@ -13,6 +13,7 @@ include { Kraken } from './modules/kraken.nf'
 include { QuantTB } from './modules/quanttb.nf'
 include { MapReads_BWA } from './modules/map_reads_bwa.nf'
 include { MapReads_Bowtie } from './modules/map_reads_bowtie.nf'
+include { MakeLowCoverageMask } from './modules/make_low_coverage_mask.nf'
 include { RunAMR } from './modules/amr.nf'
 include { TbProfiler } from './modules/tb_profiler.nf'
 include { GATK } from './workflows/gatk_calling.nf'
@@ -105,8 +106,11 @@ workflow {
 
   // VARIANT CALLING ---------------------- //
 
+  // Making a bed mask for low coverage regions
+  MakeLowCoverageMask(bam_files)
+
   // GATK variant calling, consensus fasta generation, and cvs file annotation
-  GATK(bam_files)
+  GATK(bam_files, MakeLowCoverageMask.out.low_coverage_mask)
   
   // Running LoFreq variant calling and cvs file annotation, if desired
 
